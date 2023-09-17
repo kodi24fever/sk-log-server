@@ -115,3 +115,7 @@ So far, you should be able to login to the server with the new user using SQL Au
 ### How admin users work
 
 Basically after a new user registers. They have to verify their email. After main admin can give priviliges to edit content, and ti shoudl work the new account.
+
+
+### Command to run API
+`dotnet run --launch-profile https`
