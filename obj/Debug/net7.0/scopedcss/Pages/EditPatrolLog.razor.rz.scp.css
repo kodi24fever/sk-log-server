@@ -1,0 +1,20 @@
+.log-form[b-0cmhqza9t9] {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.log-form > .comments[b-0cmhqza9t9]{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.comments > textarea[b-0cmhqza9t9] {
+    width: 80% !important;
+}
+
+
+
+.save-btn[b-0cmhqza9t9] {
+    width: 4rem;
+}

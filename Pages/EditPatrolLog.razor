@@ -1,0 +1,143 @@
+﻿@page "/EditPatrolLog"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@inject NavigationManager NavManager
+@using SharkValleyServer.Data;
+@using SharkValleyServer.Dtos;
+@using Microsoft.AspNetCore.WebUtilities
+@inject ApplicationDbContext _dbContext
+@inject UserManager<IdentityUser> _UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+
+<PageTitle>Patrol Logs</PageTitle>
+<h1>Edit Patrol Log</h1>
+
+<AuthorizeView >
+    <Authorized>
+        @if (@context.User.IsInRole(ADMINISTRATION_ROLE))
+        {
+            <EditForm Model="@patrolLogModel" OnValidSubmit="@HandleValidSubmitAsync" Context="editFormContext">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+            
+                <div class="log-form">
+                    <label>
+                        Patrol No:
+                        <InputText @bind-Value="patrolLogModel.PatrolNo" />
+                    </label>
+
+
+                    <label class="comments"> 
+                        <div>Edit Comments:</div>
+                        <InputTextArea @bind-Value="patrolLogModel.Comments" style="width: 30%; height: 200px"/>
+                    </label>
+
+                    <button class="save-btn" type="submit" @onclick="ShowModal">Save</button>
+                </div>
+                
+
+                @if(showModal & db_changed > 0)
+                {
+                    <Modal />
+                    HideModal();
+
+                }
+
+            </EditForm>
+        }
+        else
+            {
+                <p>You're not signed in as a user in @ADMINISTRATION_ROLE.</p>
+            }
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not loggged in.</p>
+    </NotAuthorized>        
+</AuthorizeView>
+
+
+
+@* Check for input of admins and database data. Right now db is being updated everytime even though the admin does not update anything*@
+
+
+@code {
+        string ADMINISTRATION_ROLE = "Administrators";
+        
+        int db_changed = -1;
+
+        private bool showModal = false;
+        
+
+        // Setting up the database query object
+        private PatrolLogEditDto patrolLogModel = new();
+
+        
+
+        protected override async Task OnInitializedAsync()
+        {
+            var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("Id", out var _Id))
+            {
+
+                // Converts patrolLogMode.id to int
+                patrolLogModel.Id = Convert.ToInt32(_Id);
+
+                // accessing data in database
+                var patrolLog = await _dbContext.PatrolLogs.FindAsync(patrolLogModel.Id);
+
+
+                // Setting the values of database to local PatrolLogModel object
+                patrolLogModel.PatrolNo = patrolLog.PatrolNo;
+                patrolLogModel.Comments = patrolLog.Comments;
+            }
+        }
+
+
+
+        // handles Changes to database
+        private async Task HandleValidSubmitAsync()
+        {
+            var patrolLog = await _dbContext.PatrolLogs.FindAsync(patrolLogModel.Id);
+
+            // gets the authenticated user or logged in user
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            // This gets the username of current machine working
+            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+
+            // Assigning changes to values
+            patrolLog.PatrolNo = patrolLogModel.PatrolNo;
+            patrolLog.Comments = patrolLogModel.Comments;
+            patrolLog.LastUpdate = DateTime.Now;
+            // Also add the user that updated the database
+            patrolLog.UpdatedBy = user.Identity.Name;
+
+
+            // Commiting changes to database and save result of changes. If db_change = 0 means no change to the db
+            db_changed = await _dbContext.SaveChangesAsync();
+            
+        }
+
+
+        // Shows the modal through onlcikc event
+        private void ShowModal()
+        {
+            showModal = true;
+        }
+
+        // Hides the modal
+        private async void HideModal()
+        {
+            // Needed delay to mantain pop up on page
+            await Task.Delay(1000);
+
+            showModal = false;
+            db_changed = -1;
+        }
+}

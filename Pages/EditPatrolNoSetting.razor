@@ -1,0 +1,90 @@
+﻿@page "/EditPatrolNoSetting"
+@inject NavigationManager NavManager
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@using SharkValleyServer.Data;
+@using SharkValleyServer.Dtos;
+@using Microsoft.AspNetCore.WebUtilities
+@inject ApplicationDbContext _dbContext
+@inject UserManager<IdentityUser> _UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+
+<AuthorizeView>
+    <Authorized>
+        @if (@context.User.IsInRole(ADMINISTRATION_ROLE))
+        {
+        <PageTitle>Patrol Logs</PageTitle>
+        <h1>Edit Patrol Log</h1>
+
+            <EditForm Model="@patrolSettingModel" OnValidSubmit="@HandleValidSubmitAsync" Context="editFormContext">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <label> Max Patrol No:
+                    <InputText @bind-Value="patrolSettingModel.Value" />
+                </label>
+
+               
+                <button type="submit">Save</button>
+            </EditForm>
+            }
+            else
+            {
+                <p>You're not signed in as a user in @ADMINISTRATION_ROLE.</p>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <p>You're not loggged in.</p>
+        </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    string ADMINISTRATION_ROLE = "Administrators";
+
+
+    // Object from dto
+    private PatrolNoSettingDto patrolSettingModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        patrolSettingModel.Key = "Comments";
+
+
+        
+        
+        var patrolNoSetting = await _dbContext.Settings.FindAsync(patrolSettingModel.Key);
+
+
+
+        if (patrolNoSetting == null){
+
+            patrolNoSetting = new Setting { Key = patrolSettingModel.Key, Value = "4000" };
+
+            _dbContext.Add(patrolNoSetting);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        patrolSettingModel.Value = patrolNoSetting?.Value??"4000";
+        
+    }
+
+
+    // Method to handle submit 
+    private async Task HandleValidSubmitAsync()
+    {
+        var patrolNoSetting = await _dbContext.Settings.FindAsync(patrolSettingModel.Key);
+
+        patrolNoSetting.Value = patrolSettingModel.Value;
+
+        // Save Changes to DB
+        await _dbContext.SaveChangesAsync();
+
+    }
+}

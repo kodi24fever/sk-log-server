@@ -1,0 +1,20 @@
+.log-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.log-form > .comments{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.comments > textarea {
+    width: 80% !important;
+}
+
+
+
+.save-btn {
+    width: 4rem;
+}

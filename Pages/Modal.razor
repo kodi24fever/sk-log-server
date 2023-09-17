@@ -1,0 +1,19 @@
+<div id="popup1" class="overlay">
+    <div class="popup">
+        @* <h2>Changes Has Been Saved</h2> *@
+        <a class="close">&times;</a>
+        <div class="content">Changes Has Been Saved</div>
+    </div>
+
+
+    <script>
+        var modal = document.getElementsByClassName("overlay");
+        
+        modal[0].addEventListener("click", () => {
+
+                modal[0].style.visibility = 'hidden';
+                modal[0].style.opacity = '0';
+
+        });
+    </script>
+</div>

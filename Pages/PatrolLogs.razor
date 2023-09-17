@@ -1,0 +1,93 @@
+﻿@page "/"
+@page "/patrollogs"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@using SharkValleyServer.Data;
+@inject IJSRuntime JSRuntime
+@inject ApplicationDbContext _dbContext
+@inject UserManager<IdentityUser> _UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+
+<PageTitle>Patrol Logs</PageTitle>
+<h1>Patrol Logs</h1>
+<AuthorizeView>
+    <Authorized>
+          @if (@context.User.IsInRole(ADMINISTRATION_ROLE))
+        {
+        <div onbeforeunload="DataTablesRemove('#patrolLogs')">
+        <table id="patrolLogs" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>No</th>
+                <th>Comments</th>
+                <th>Created</th>
+                <th>Created by</th>
+                <th>Last Update</th>
+                <th>Updated By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var item in getLogs())
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.PatrolNo</td>
+                    <td>@item.Comments</td>
+                    <td>@item.Created</td>
+                    <td>@item.CreatedBy</td>
+                    <td>@item.LastUpdate</td>
+                    <td>@item.UpdatedBy</td>
+                    <td><a href="/EditPatrolLog?Id=@item.Id">Edit</a></td>
+                </tr>
+            }
+            </tbody>
+            </table>
+
+
+            @* I dont think we need this button since we have actions next to every patrolog *@
+            @* <a class="btn btn-primary" href="/EditPatrolNoSetting">Edit Patrol Number</a> *@
+
+        </div>
+        
+        } else
+        {
+            <p>You're not signed in as a user in @ADMINISTRATION_ROLE.</p>
+        }
+    </Authorized>
+
+    @* Not authorized admin logged in message *@
+    <NotAuthorized>
+        <p>You're not loggged in.</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+
+
+
+@code {
+    string ADMINISTRATION_ROLE = "Administrators";
+
+    // get the entire patrolLog list in a List Object
+    private List<PatrolLog> getLogs()
+    {
+        return _dbContext.PatrolLogs.ToList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //Leave the code in that populates the table. I removed it so that I only show the needed pieces
+            //This setups up the basic datatables.net table and the onbeforeunload removes it
+            await JSRuntime.InvokeAsync<object>("DataTablesAdd", "#patrolLogs");
+        }
+    }
+}
