@@ -29,6 +29,7 @@ namespace SharkValleyServer.Controllers
                 return Unauthorized();
 
             IdentityUser? user = null;
+            
             if(!string.IsNullOrEmpty(dto.Email) && !string.IsNullOrEmpty(dto.Password)) {
                var userFound = await _userManager.FindByEmailAsync(dto.Email);
                 if (userFound != null)

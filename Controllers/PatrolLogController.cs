@@ -36,9 +36,11 @@ namespace SharkValleyServer.Controllers
             if (userId == null)
                 return Unauthorized(Request);
 
+
             IdentityUser? user = await userManager.FindByIdAsync(userId);
             if (user == null)
-                return Unauthorized(Request);
+                return NotFound();
+                // return Unauthorized(Request);
 
             var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo =p.PatrolNo, Created = p.Created}).Take(10).ToList();
             int userPatrolLogsCount = dbContext.PatrolLogs.Count(p => p.CreatedBy == user.UserName);
