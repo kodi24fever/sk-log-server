@@ -18,15 +18,12 @@ namespace SharkValleyServer.Controllers
         private readonly UserManager<IdentityUser> userManager;
 
 
-
+        // Constructor. This is needed to initialize the objects to not null
         public RegisterController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
         }
-
-
-
 
         [HttpGet]
         public async Task<ActionResult> Get()
