@@ -19,6 +19,14 @@ namespace SharkValleyServer.Controllers
 
 
 
+        public RegisterController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
+        {
+            this.dbContext = dbContext;
+            this.userManager = userManager;
+        }
+
+
+
 
         [HttpGet]
         public async Task<ActionResult> Get()
@@ -35,19 +43,25 @@ namespace SharkValleyServer.Controllers
         public async Task<ActionResult> Post([FromBody] UserRegisterDto dto)
         {
 
-
+            // Get the api key from headers when user send post request
             if (!Auth.IsValidAPIKey(Request))
                 return Unauthorized();
 
-
-
+            
+            // getting body data
             string? username = dto.UserName;
             string? email = dto.Email;
             string? password = dto.Password;
 
+  
+            IdentityUser? user = await userManager.FindByEmailAsync(email);
+            
+            user = new IdentityUser{UserName = username, Email = email};
+            
+            var result = await userManager.CreateAsync(user, password);
+            
 
-
-            return Ok(username);
+            return Ok(result);
 
         }
 
