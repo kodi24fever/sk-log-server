@@ -13,6 +13,8 @@ namespace SharkValleyServer.Services
             }
             return false;
         }
+
+
         public static string? getUserId(HttpRequest request)
         {
             Microsoft.Extensions.Primitives.StringValues id;
