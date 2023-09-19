@@ -11781,24 +11781,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fdaviz\\.nuget\\packages\\": {}
+    "C:\\Users\\Leanys Diaz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\SharkValleyServer.csproj",
+      "projectUniqueName": "C:\\Users\\Leanys Diaz\\Desktop\\sk-log-server\\SharkValleyServer.csproj",
       "projectName": "SharkValleyServer",
-      "projectPath": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\SharkValleyServer.csproj",
-      "packagesPath": "C:\\Users\\fdaviz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\",
+      "projectPath": "C:\\Users\\Leanys Diaz\\Desktop\\sk-log-server\\SharkValleyServer.csproj",
+      "packagesPath": "C:\\Users\\Leanys Diaz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Leanys Diaz\\Desktop\\sk-log-server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\fdaviz\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Leanys Diaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
