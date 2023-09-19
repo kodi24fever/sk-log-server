@@ -25,20 +25,15 @@
                 <tbody>
                     @foreach (var user in ColUsers)
                     {
-                        
-                        
                         <tr>
                             <td>@user.Id.Substring(0, 5) ...</td>
                             <td>@user.UserName</td>
                             <td>@user.Email</td>
 
-
                             @* This part shows the role of each user in the administarion page. Note: Consider adding a new model to db with these credential and do all in 1 fetch to show all user info *@
                             <td>
                                 @{  
                                     for(int counter = count; counter < UserRole.Count; counter++){
-
-                                        Console.WriteLine(counter);
 
                                         if(counter < UserRole.Count){
                                     
