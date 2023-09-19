@@ -13,6 +13,7 @@
 <AuthorizeView>
     <Authorized>
         @if (@context.User.IsInRole(ADMINISTRATION_ROLE))
+        
         {
             <table class="table">
                 <thead>
@@ -30,7 +31,14 @@
                             <td>@user.Id.Substring(0, 5) ...</td>
                             <td>@user.UserName</td>
                             <td>@user.Email</td>
-                            <td>@GetRole(user)</td>
+                            <td>@{
+                                    var roles = _RoleManager.Roles;
+
+                                    var role = roles.FirstOrDefault();
+
+                                    <span>@role</span>
+                                }
+                            </td>
                             <td>
                                 <!-- Edit the current forecast -->
                                 <button class="btn btn-primary"
@@ -137,6 +145,9 @@
 
     List<string> Options = new List<string>() { "Users", "Administrators" };
 
+
+    
+
     // To hold any possible errors
         string strError = "";
 
@@ -152,7 +163,6 @@
         objUser = new IdentityUser();
 
 
-
         // Sets a default password for new user. It could be randomized here and send it trhough emails
         objUser.PasswordHash = "*****";
         // Set Id to blank so we know it is a new record
@@ -163,14 +173,7 @@
 
 
 
-    async Task GetRole(IdentityUser user)
-    {
-
-        var roles = await _UserManager.GetRolesAsync(user);
-        //Console.WriteLine(roles.Any());
-
-    }
-
+    
 
     // Save the user method
     async Task SaveUser()
@@ -349,6 +352,7 @@
                 Email = x.Email,
                 PasswordHash = "*****"
             });
+            
         foreach (var item in user)
         {
             ColUsers.Add(item);
