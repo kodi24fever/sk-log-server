@@ -7,6 +7,28 @@ namespace SharkValleyServer.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<PatrolLog>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<PatrolLog>()
+                .HasMany(e => e.Signatures)
+                .WithOne(e => e.PatrolLog)
+                .HasForeignKey(e => e.PatrolLogId)
+                .IsRequired();
+        }
+
+
         public DbSet<PatrolTimeLog> PatrolTimeLogs { get; set; }
         public DbSet<WeatherLog> WeatherLogs { get; set; }
         public DbSet<ContactLog> ContactLogs { get; set; }
@@ -18,9 +40,6 @@ namespace SharkValleyServer.Data
         public DbSet<Setting> Settings { get; set; }
 
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+
     }
 }

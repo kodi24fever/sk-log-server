@@ -38,7 +38,11 @@
 
                     <button class="save-btn" type="submit" @onclick="ShowModal">Save</button>
                 </div>
-                
+
+
+
+
+
 
                 @if(showModal & db_changed > 0)
                 {
@@ -61,7 +65,7 @@
 
 
 
-@* Check for input of admins and database data. Right now db is being updated everytime even though the admin does not update anything*@
+@* Check for input of admins and database data. Right now db is being updated everytime even though the admin does not update anything, just by clicking save button*@
 
 
 @code {
@@ -75,8 +79,7 @@
         // Setting up the database query object
         private PatrolLogEditDto patrolLogModel = new();
 
-        
-
+    
         protected override async Task OnInitializedAsync()
         {
             var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
@@ -103,6 +106,13 @@
         private async Task HandleValidSubmitAsync()
         {
             var patrolLog = await _dbContext.PatrolLogs.FindAsync(patrolLogModel.Id);
+
+
+
+            foreach(var sign in patrolLog.Signatures){
+
+                Console.WriteLine(sign.FullName);
+            }
 
             // gets the authenticated user or logged in user
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();

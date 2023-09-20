@@ -243,6 +243,45 @@
         }
       },
       {
+        "HashCode": -667533760,
+        "Kind": "Components.Component",
+        "Name": "SharkValleyServer.Pages.LogsByIdPatrol",
+        "AssemblyName": "SharkValleyServer",
+        "DisplayName": "SharkValleyServer.Pages.LogsByIdPatrol",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "LogsByIdPatrol"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "SharkValleyServer.Pages.LogsByIdPatrol",
+          "Common.TypeNameIdentifier": "LogsByIdPatrol",
+          "Common.TypeNamespace": "SharkValleyServer.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -1624754036,
+        "Kind": "Components.Component",
+        "Name": "SharkValleyServer.Pages.LogsByIdPatrol",
+        "AssemblyName": "SharkValleyServer",
+        "DisplayName": "SharkValleyServer.Pages.LogsByIdPatrol",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "SharkValleyServer.Pages.LogsByIdPatrol"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "SharkValleyServer.Pages.LogsByIdPatrol",
+          "Common.TypeNameIdentifier": "LogsByIdPatrol",
+          "Common.TypeNamespace": "SharkValleyServer.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
         "HashCode": -550599075,
         "Kind": "Components.Component",
         "Name": "SharkValleyServer.App",
@@ -24841,6 +24880,11 @@
       "FilePath": "c:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\Pages\\_ViewImports.cshtml",
       "TargetPath": "Pages\\_ViewImports.cshtml",
       "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\Pages\\LogsByIdPatrol.razor",
+      "TargetPath": "Pages\\LogsByIdPatrol.razor",
+      "FileKind": "component"
     }
   ]
 }

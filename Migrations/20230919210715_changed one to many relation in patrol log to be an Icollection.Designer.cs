@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharkValleyServer.Data;
 
@@ -11,9 +12,11 @@ using SharkValleyServer.Data;
 namespace SharkValleyServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230919210715_changed one to many relation in patrol log to be an Icollection")]
+    partial class changedonetomanyrelationinpatrollogtobeanIcollection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,7 +374,6 @@ namespace SharkValleyServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PatrolLogId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -561,9 +563,7 @@ namespace SharkValleyServer.Migrations
                 {
                     b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
                         .WithMany("Signatures")
-                        .HasForeignKey("PatrolLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatrolLogId");
 
                     b.Navigation("PatrolLog");
                 });
