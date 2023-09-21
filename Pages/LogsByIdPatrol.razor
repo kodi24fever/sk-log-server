@@ -1,4 +1,4 @@
-@page "/LogsByIdPatrol"
+@page "/logsByIdPatrol"
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Identity;
 @inject NavigationManager NavManager
@@ -81,12 +81,18 @@
 
         signatures = await _dbContext.PatrolLogs
                     .Include(pl => pl.Signatures)
+                    .Include(pl => pl.SupplyLogs)
+                    .Include(pl => pl.PatrolTime)
                     .FirstOrDefaultAsync(pl => pl.Id == 14002);
 
 
 
 
         Console.WriteLine(signatures.Signatures.Count);
+
+
+
+        Console.WriteLine(signatures.PatrolTime.ArrivalTime);
 
 
         foreach(var oenSign in signatures.SupplyLogs)

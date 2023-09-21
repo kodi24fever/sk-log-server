@@ -13,21 +13,6 @@ namespace SharkValleyServer.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-
-            modelBuilder.Entity<PatrolLog>()
-                .HasKey(p => p.Id);
-
-            modelBuilder.Entity<PatrolLog>()
-                .HasMany(e => e.Signatures)
-                .WithOne(e => e.PatrolLog)
-                .HasForeignKey(e => e.PatrolLogId)
-                .IsRequired();
-        }
-
 
         public DbSet<PatrolTimeLog> PatrolTimeLogs { get; set; }
         public DbSet<WeatherLog> WeatherLogs { get; set; }
