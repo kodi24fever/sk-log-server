@@ -39,8 +39,16 @@ namespace SharkValleyServer.Controllers
 
             IdentityUser? user = await userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFound();
-                // return Unauthorized(Request);
+            {
+                return Unauthorized(Request);
+            }
+                
+            
+            // Check that use is admin before creating a patrol log
+            if(!(await userManager.IsInRoleAsync(user, "Administrators")))
+            {
+                return Unauthorized();
+            }
 
             var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo =p.PatrolNo, Created = p.Created}).Take(10).ToList();
             int userPatrolLogsCount = dbContext.PatrolLogs.Count(p => p.CreatedBy == user.UserName);
@@ -78,9 +86,6 @@ namespace SharkValleyServer.Controllers
             // PatrolNo cannot be increased everytime a request is made it has to be set by admin or increasded daily
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
             int patrolNo = int.Parse(patrolNoSetting.Value);
-
-
-
             // patrolNo++;
             patrolNoSetting.Value = patrolNo.ToString();
             await dbContext.SaveChangesAsync();
@@ -113,6 +118,7 @@ namespace SharkValleyServer.Controllers
         }
 
 
+        // it creates a default PatrolNo in Settings table if it does not exist
         private async Task initializePatrolSettingIfNotExist()
         {
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
