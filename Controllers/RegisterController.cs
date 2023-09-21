@@ -6,6 +6,10 @@ using SharkValleyServer.Dtos;
 using SharkValleyServer.Services;
 
 
+using Microsoft.EntityFrameworkCore;
+using System.Drawing.Text;
+
+
 
 namespace SharkValleyServer.Controllers
 {
@@ -29,7 +33,25 @@ namespace SharkValleyServer.Controllers
         public async Task<ActionResult> Get()
         {
 
-            return Ok("Hello");
+            string? userId = Auth.getUserId(Request);
+            if (userId == null)
+                return Unauthorized(Request);
+
+
+            IdentityUser?  user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+                // return Unauthorized(Request);
+
+
+
+            var isInRole = await userManager.IsInRoleAsync(user, "Administrators");
+
+
+            if(isInRole){
+                return Ok("Admin");
+            }
+            return Ok("Not Admin");
 
         }
 
@@ -56,6 +78,21 @@ namespace SharkValleyServer.Controllers
             user = new IdentityUser{UserName = username, Email = email};
             
             var result = await userManager.CreateAsync(user, password);
+
+
+
+            var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
+
+
+            var PatrolLogId = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value).FirstOrDefault();
+
+
+
+
+            var createNewSignature = new Signature { FullName = "Joseit Erecto", PatrolLogId = PatrolLogId.Id};
+
+            await dbContext.AddAsync(createNewSignature);
+            dbContext.SaveChanges();
             
 
             return Ok(result);
