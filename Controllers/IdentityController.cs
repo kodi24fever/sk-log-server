@@ -26,7 +26,7 @@ namespace SharkValleyServer.Controllers
 
 
         // POST api/<IdentityController>
-        [HttpPost]
+        [HttpPost("logIn")]
         public  async Task<IActionResult> Post([FromBody] UserLoginDto dto)
         {
             if(!Auth.IsValidAPIKey(Request))
@@ -98,6 +98,22 @@ namespace SharkValleyServer.Controllers
             return BadRequest("Incorrect Credentials");
           
         }
+
+
+
+
+        [HttpPost("logOut")]
+        public async Task<ActionResult> LogOff()
+        {
+            
+
+            await _signInManager.SignOutAsync();
+
+
+            return Ok("successfully signed out");
+
+        }
+
 
 
     }
