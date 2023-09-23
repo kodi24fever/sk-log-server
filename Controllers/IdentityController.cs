@@ -43,35 +43,6 @@ namespace SharkValleyServer.Controllers
                     {
                         user = userFound;
 
-                        // Add Timer on sign in
-                        // get current patrolLogID from Settings
-                        var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
-                        
-                        // get current patrolLog for the specified patrolNo
-                        var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
-
-                        if(patrolLog == null){
-                            Console.WriteLine("No Object");
-
-                        }else{
-
-                        Console.WriteLine(patrolLog.Id);
-
-
-                        // Initialize empty logIn timer
-                        UserTimer logIn = new UserTimer();
-
-                        logIn.PatrolLogId = patrolLog.Id;
-                        logIn.Email = user.Email;
-                        logIn.LogInTime = DateTime.Now;
-
-
-                        // save changes to db
-                        await dbContext.AddAsync(logIn);
-                        dbContext.SaveChanges();
-
-                        }
-
                     }
                         
                 }
@@ -83,6 +54,45 @@ namespace SharkValleyServer.Controllers
             {
 
                 // we can insert timer here before return response of users logged in
+
+                // Add Timer on sign in
+                // get current patrolLogID from Settings
+                var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
+                
+                // get current patrolLog for the specified patrolNo
+                var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
+
+                if(patrolLog == null){
+                    Console.WriteLine("No Object");
+
+                }else{
+
+                Console.WriteLine(patrolLog.Id);
+
+
+
+                var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+
+
+
+                // If logTimer does not exist create a new one
+                if(logExist == null){
+
+                    // Initialize empty logIn timer
+                    UserTimer logIn = new UserTimer();
+
+                    logIn.PatrolLogId = patrolLog.Id;
+                    logIn.Email = user.Email;
+                    logIn.LogInTime = DateTime.Now;
+
+
+                    // save changes to db
+                    await dbContext.AddAsync(logIn);
+                    dbContext.SaveChanges();
+                }
+
+                
+                }
 
                 return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName });
             }
