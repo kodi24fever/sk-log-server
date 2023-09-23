@@ -16,14 +16,14 @@ namespace SharkValleyServer.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class RegisterController: ControllerBase
+    public class UserTimerController: ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<IdentityUser> userManager;
 
 
         // Constructor. This is needed to initialize the objects to not null
-        public RegisterController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
+        public UserTimerController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
@@ -33,25 +33,17 @@ namespace SharkValleyServer.Controllers
         public async Task<ActionResult> Get()
         {
 
+            // Get the api key from headers when user send post request
+            if (!Auth.IsValidAPIKey(Request))
+                return Unauthorized();
+
             string? userId = Auth.getUserId(Request);
             if (userId == null)
-                return Unauthorized(Request);
+                return Unauthorized();
 
 
-            IdentityUser?  user = await userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound();
-                // return Unauthorized(Request);
-
-
-
-            var isInRole = await userManager.IsInRoleAsync(user, "Administrators");
-
-
-            if(isInRole){
-                return Ok("Admin");
-            }
-            return Ok("Not Admin");
+            
+            return Ok("Hello To timers");
 
         }
 
@@ -66,6 +58,9 @@ namespace SharkValleyServer.Controllers
             if (!Auth.IsValidAPIKey(Request))
                 return Unauthorized();
 
+
+
+            // get current patrolLogID from Settings
             
             // getting body data
             string? username = dto.UserName;
@@ -74,7 +69,12 @@ namespace SharkValleyServer.Controllers
 
   
             IdentityUser? user = await userManager.FindByEmailAsync(email);
-            
+
+
+            // var timerTable = await dbContext.Find(UserTimer, user.Email);
+
+
+
             user = new IdentityUser{UserName = username, Email = email};
             
             var result = await userManager.CreateAsync(user, password);

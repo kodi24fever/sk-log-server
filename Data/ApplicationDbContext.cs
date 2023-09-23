@@ -25,6 +25,9 @@ namespace SharkValleyServer.Data
         public DbSet<Setting> Settings { get; set; }
 
 
+        // Set new models here to make chanegs in database
+        public DbSet<UserTimer> UserTimers { get; set; }
+
 
     }
 }
