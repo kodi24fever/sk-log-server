@@ -108,7 +108,7 @@ namespace SharkValleyServer.Controllers
             patrolLog.Created = DateTime.Now;
 
 
-            // add chanegs and save them to db
+            // add changes and save them to db
             await dbContext.AddAsync(patrolLog);
             dbContext.SaveChanges();
 
