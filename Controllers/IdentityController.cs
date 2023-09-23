@@ -43,8 +43,7 @@ namespace SharkValleyServer.Controllers
                     {
                         user = userFound;
 
-                    }
-                        
+                    }   
                 }
             }
 
@@ -70,9 +69,8 @@ namespace SharkValleyServer.Controllers
                 Console.WriteLine(patrolLog.Id);
 
 
-
+                // Get userTimer Table
                 var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
-
 
 
                 // If logTimer does not exist create a new one
