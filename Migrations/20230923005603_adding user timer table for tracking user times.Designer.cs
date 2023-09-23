@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharkValleyServer.Data;
 
@@ -11,9 +12,11 @@ using SharkValleyServer.Data;
 namespace SharkValleyServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230923005603_adding user timer table for tracking user times")]
+    partial class addingusertimertablefortrackingusertimes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -410,39 +413,6 @@ namespace SharkValleyServer.Migrations
                     b.ToTable("SupplyLogs");
                 });
 
-            modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndedPatrolTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LogInTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LogOutTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("PatrolLogId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartedPatrolTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatrolLogId");
-
-                    b.ToTable("UserTimers");
-                });
-
             modelBuilder.Entity("SharkValleyServer.Data.WeatherLog", b =>
                 {
                     b.Property<int>("Id")
@@ -602,15 +572,6 @@ namespace SharkValleyServer.Migrations
                 {
                     b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
                         .WithMany("SupplyLogs")
-                        .HasForeignKey("PatrolLogId");
-
-                    b.Navigation("PatrolLog");
-                });
-
-            modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
-                {
-                    b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
-                        .WithMany()
                         .HasForeignKey("PatrolLogId");
 
                     b.Navigation("PatrolLog");
