@@ -5,9 +5,7 @@ namespace SharkValleyServer.Dtos
 {
     public class UserTimerDto
     {
-        [Required]
-        public int? PatrolLogId {get; set;}
-
+        
         [Required]
         public string? Email { get; set; } = "";
 

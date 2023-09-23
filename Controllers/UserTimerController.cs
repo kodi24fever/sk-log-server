@@ -51,7 +51,7 @@ namespace SharkValleyServer.Controllers
         // Adding post method to api
         [HttpPost]
 
-        public async Task<ActionResult> Post([FromBody] UserRegisterDto dto)
+        public async Task<ActionResult> Post([FromBody] UserTimerDto dto)
         {
 
             // Get the api key from headers when user send post request
@@ -63,23 +63,17 @@ namespace SharkValleyServer.Controllers
             // get current patrolLogID from Settings
             
             // getting body data
-            string? username = dto.UserName;
-            string? email = dto.Email;
-            string? password = dto.Password;
-
-  
-            IdentityUser? user = await userManager.FindByEmailAsync(email);
-
-
-            // var timerTable = await dbContext.Find(UserTimer, user.Email);
+            string? emnail = dto.Email;
+            DateTime? logIn = dto.LogInTime;
+            DateTime? startdPatrolTime = dto.StartedPatrolTime;
+            DateTime? endedPatrolTime = dto.EndedPatrolTime;
+            DateTime? logOutTime = dto.LogILogOutTime;
 
 
 
-            user = new IdentityUser{UserName = username, Email = email};
-            
-            var result = await userManager.CreateAsync(user, password);
 
-            return Ok(result);
+
+            return Ok("Hello");
 
         }
 
