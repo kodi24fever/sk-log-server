@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharkValleyServer.Dtos;
 using SharkValleyServer.Services;
+using SharkValleyServer.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,10 +15,13 @@ namespace SharkValleyServer.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public IdentityController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManage)
+        private readonly ApplicationDbContext dbContext;
+
+        public IdentityController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManage, ApplicationDbContext dbContext)
         {
             this._userManager = userManager;
             this._signInManager = signInManage;
+            this.dbContext = dbContext;
         }
 
 
@@ -36,12 +40,49 @@ namespace SharkValleyServer.Controllers
                 {
                     Microsoft.AspNetCore.Identity.SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(userFound, dto.Password, false);
                     if (signInResult.Succeeded)
+                    {
                         user = userFound;
+
+                        // Add Timer on sign in
+                        // get current patrolLogID from Settings
+                        var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
+
+                        var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
+
+                        if(patrolLog == null){
+                            Console.WriteLine("No Object");
+
+                        }else{
+
+                        Console.WriteLine(patrolLog.Id);
+
+
+                        // Initialize empty logIn timer
+                        UserTimer logIn = new UserTimer();
+
+                        logIn.PatrolLogId = patrolLog.Id;
+                        logIn.Email = user.Email;
+                        logIn.LogInTime = DateTime.Now;
+
+
+                        // save changes to db
+                        await dbContext.AddAsync(logIn);
+                        dbContext.SaveChanges();
+
+                        }
+
+                    }
+                        
                 }
             }
-           
+
+
+
             if(user != null)
             {
+
+                // we can insert timer here before return response of users logged in
+
                 return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName });
             }
 

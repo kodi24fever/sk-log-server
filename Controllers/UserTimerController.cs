@@ -59,8 +59,25 @@ namespace SharkValleyServer.Controllers
                 return Unauthorized();
 
 
+            string? userId = Auth.getUserId(Request);
+            if (userId == null)
+                return Unauthorized(Request);
+
+            
+            // verify userz
+            IdentityUser?  user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+
+
 
             // get current patrolLogID from Settings
+            var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
+
+
+            
+
+
             
             // getting body data
             string? emnail = dto.Email;
