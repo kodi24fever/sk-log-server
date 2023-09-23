@@ -64,7 +64,7 @@ namespace SharkValleyServer.Controllers
                 return Unauthorized(Request);
 
             
-            // verify userz
+            // verify users
             IdentityUser?  user = await userManager.FindByIdAsync(userId);
             if (user == null)
                 return NotFound();
