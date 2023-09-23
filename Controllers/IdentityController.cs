@@ -46,7 +46,8 @@ namespace SharkValleyServer.Controllers
                         // Add Timer on sign in
                         // get current patrolLogID from Settings
                         var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
-
+                        
+                        // get current patrolLog for the specified patrolNo
                         var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
 
                         if(patrolLog == null){

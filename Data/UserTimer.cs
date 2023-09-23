@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
 
 namespace SharkValleyServer.Data
@@ -18,5 +19,11 @@ namespace SharkValleyServer.Data
         public DateTime StartedPatrolTime { get; set; }
         public DateTime EndedPatrolTime { get; set; }
         public DateTime LogOutTime { get; set; }
+
+
+        public Boolean hasStartedPatrol { get; set; } = false;
+
+        public Boolean hasEndedPatrol { get; set; } = false;
+
     }
 }

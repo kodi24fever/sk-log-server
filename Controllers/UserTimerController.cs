@@ -49,7 +49,7 @@ namespace SharkValleyServer.Controllers
 
 
         // Adding post method to api
-        [HttpPost]
+        [HttpPost("startTime")]
 
         public async Task<ActionResult> Post([FromBody] UserTimerDto dto)
         {
@@ -74,23 +74,51 @@ namespace SharkValleyServer.Controllers
             // get current patrolLogID from Settings
             var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
 
+            // get current patrolLog for the specified patrolNo
+            var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == currentPatrolLogId.Value.ToString()).FirstOrDefault();
 
+
+            // check if patrolLogId and email exist in the table rturn bad repsonse else add start timer
+            var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+
+
+
+            Console.WriteLine(logExist.Email);
+
+
+            if(logExist == null)
+            {
+                Console.WriteLine("it does not exist log");
+
+
+            }else{
+                Console.WriteLine("it exists log");
+            }
+
+
+
+            if(logExist.hasStartedPatrol == true)
+            {
+                //handle return if user hasStartedPatrol
+
+                return Ok("Soryy already startedPatrol");
+            }
+            else
+            {
             
+                // getting body data
+                logExist.StartedPatrolTime = dto.StartedPatrolTime;
 
+                logExist.hasStartedPatrol = true;
 
-            
-            // getting body data
-            string? emnail = dto.Email;
-            DateTime? logIn = dto.LogInTime;
-            DateTime? startdPatrolTime = dto.StartedPatrolTime;
-            DateTime? endedPatrolTime = dto.EndedPatrolTime;
-            DateTime? logOutTime = dto.LogILogOutTime;
+                // save startedPatrolTime to db
+                dbContext.SaveChanges();
 
-
+            }
 
 
 
-            return Ok("Hello");
+            return Ok("Timer Started");
 
         }
 
