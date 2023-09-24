@@ -23,13 +23,19 @@
                 <DataAnnotationsValidator />
                 <ValidationSummary />
 
-                <label> Max Patrol No:
+                <label> Actual Patrol No:
                     <InputText @bind-Value="patrolSettingModel.Value" />
                 </label>
-
-               
                 <button type="submit">Save</button>
             </EditForm>
+
+
+            if(valueChanged){
+                <br>
+                <p class="font-weight-bold">Old Patrol Log No: @oldValue</p>
+                <p class="font-weight-bold">Patrol Log No Updated to: @patrolSettingModel.Value</p>
+            }
+            
             }
             else
             {
@@ -47,17 +53,19 @@
     string ADMINISTRATION_ROLE = "Administrators";
 
 
+    private string? oldValue = "";
+    private bool valueChanged = false;
+
+
     // Object from dto
     private PatrolNoSettingDto patrolSettingModel = new();
 
     protected override async Task OnInitializedAsync()
     {
 
-        patrolSettingModel.Key = "Comments";
+        patrolSettingModel.Key = "patrolNo";
 
 
-        
-        
         var patrolNoSetting = await _dbContext.Settings.FindAsync(patrolSettingModel.Key);
 
 
@@ -71,12 +79,14 @@
             await _dbContext.SaveChangesAsync();
         }
 
+        oldValue = patrolNoSetting.Value;
+
         patrolSettingModel.Value = patrolNoSetting?.Value??"4000";
         
     }
 
 
-    // Method to handle submit 
+    // Method to handle submit and change 
     private async Task HandleValidSubmitAsync()
     {
         var patrolNoSetting = await _dbContext.Settings.FindAsync(patrolSettingModel.Key);
@@ -85,6 +95,10 @@
 
         // Save Changes to DB
         await _dbContext.SaveChangesAsync();
+
+
+
+        valueChanged = true;
 
     }
 }

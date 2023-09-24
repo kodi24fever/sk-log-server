@@ -7,19 +7,19 @@
 
 
 
-
-
 <h3>Administration</h3>
 <AuthorizeView>
     <Authorized>
         @if (@context.User.IsInRole(ADMINISTRATION_ROLE))
         {
+            int count = 0;
             <table class="table">
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>User Name</th>
                         <th>Email</th>
+                        <th>Role</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,6 +29,22 @@
                             <td>@user.Id.Substring(0, 5) ...</td>
                             <td>@user.UserName</td>
                             <td>@user.Email</td>
+
+                            @* This part shows the role of each user in the administarion page. Note: Consider adding a new model to db with these credential and do all in 1 fetch to show all user info *@
+                            <td>
+                                @{  
+                                    for(int counter = count; counter < UserRole.Count; counter++){
+
+                                        if(counter < UserRole.Count){
+                                    
+                                            <span>@UserRole[counter]</span>;
+                                            count++;
+                                            break;
+                                        }
+                                    }
+                                }
+                            </td>
+                            
                             <td>
                                 <!-- Edit the current forecast -->
                                 <button class="btn btn-primary"
@@ -37,6 +53,8 @@
                                 </button>
                             </td>
                         </tr>
+
+                        
                     }
                 </tbody>
             </table>
@@ -115,6 +133,8 @@
         {
             <p>You're not signed in as a user in @ADMINISTRATION_ROLE.</p>
         }
+
+
     </Authorized>
     <NotAuthorized>
         <p>You're not loggged in.</p>
@@ -135,20 +155,24 @@
 
     List<string> Options = new List<string>() { "Users", "Administrators" };
 
+
+    List<string> UserRole = new List<string>();
+
+
+
+    
+
     // To hold any possible errors
-        string strError = "";
+    string strError = "";
 
     // To enable showing the Popup
     bool ShowPopup = false;
-
-
     
     // Method to add a new user
     void AddNewUser()
     {
         // Make new user
         objUser = new IdentityUser();
-
 
 
         // Sets a default password for new user. It could be randomized here and send it trhough emails
@@ -337,6 +361,7 @@
                 Email = x.Email,
                 PasswordHash = "*****"
             });
+            
         foreach (var item in user)
         {
             ColUsers.Add(item);
@@ -350,11 +375,34 @@
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     string ADMINISTRATION_ROLE = "Administrators";
     System.Security.Claims.ClaimsPrincipal CurrentUser;
+
+
+    // Here can call methods in component initialization
     protected override async Task OnInitializedAsync()
     {
         // Get the current logged in user
         CurrentUser = (await authenticationStateTask).User;
 
         GetUsers();
+
+        foreach(var colUser in ColUsers)
+        {
+            var user = await _UserManager.FindByIdAsync(colUser.Id);
+
+            if(user != null)
+            {
+                var isInRole = await _UserManager.IsInRoleAsync(colUser, ADMINISTRATION_ROLE);
+
+                if (isInRole)
+                {
+                    UserRole.Add("Administrator");
+                }
+                else
+                {
+                    UserRole.Add("User");
+                }
+            }
+        }
+
     }
 }

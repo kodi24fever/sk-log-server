@@ -63,6 +63,7 @@
   }
   .popup .close:hover[b-27wha6rp0i] {
     color: #06D85F;
+    cursor: pointer;
   }
   .popup .content[b-27wha6rp0i] {
     max-height: 30%;

@@ -36,15 +36,25 @@ namespace SharkValleyServer.Controllers
             if (userId == null)
                 return Unauthorized(Request);
 
+
             IdentityUser? user = await userManager.FindByIdAsync(userId);
             if (user == null)
+            {
                 return Unauthorized(Request);
+            }
+                
+            
+            // Check that use is admin before creating a patrol log
+            if(!(await userManager.IsInRoleAsync(user, "Administrators")))
+            {
+                return Unauthorized();
+            }
 
             var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo =p.PatrolNo, Created = p.Created}).Take(10).ToList();
             int userPatrolLogsCount = dbContext.PatrolLogs.Count(p => p.CreatedBy == user.UserName);
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
             int patroLogsCount = int.Parse(patrolNoSetting?.Value??"0");
-
+            
             return Ok(new { userPatrolLogs, userPatrolLogsCount, patroLogsCount });
         }
 
@@ -52,7 +62,6 @@ namespace SharkValleyServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PatrolLogDto dto)
         {
-
             if (!Auth.IsValidAPIKey(Request))
                 return Unauthorized();
 
@@ -64,15 +73,25 @@ namespace SharkValleyServer.Controllers
             if (user == null)
                 return Unauthorized(Request);
 
+            
+            // Check that use is admin before creating a patrol log
+            if(!(await userManager.IsInRoleAsync(user, "Administrators")))
+            {
+                return Unauthorized();
+            }
 
             await initializePatrolSettingIfNotExist();
 
+
+            // PatrolNo cannot be increased everytime a request is made it has to be set by admin or increasded daily
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
             int patrolNo = int.Parse(patrolNoSetting.Value);
-            patrolNo++;
+            // patrolNo++;
             patrolNoSetting.Value = patrolNo.ToString();
             await dbContext.SaveChangesAsync();
 
+
+            // Initialize patrolLog Object
             PatrolLog patrolLog = new PatrolLog();
 
             
@@ -81,18 +100,25 @@ namespace SharkValleyServer.Controllers
             patrolLog.WeatherLog = dto.weatherLog;
             patrolLog.ContactLog = dto.contactLog;
             patrolLog.Comments = dto.comments;
+            patrolLog.Signatures.AddRange(dto.signatures?.Select(s => new Signature { FullName = s }).ToList() ?? new List<Signature>());
             patrolLog.IncidentReports.AddRange(dto.incidentReports);
             patrolLog.WildLifeLogs.AddRange(dto.wildlifeSights?.Where(w=> w.Amount> 0).ToList()?? new List<WildLifeLog>());
             patrolLog.SupplyLogs.AddRange(dto.supplies);
-            patrolLog.Signatures.AddRange(dto.signatures?.Select(s => new Signature { FullName = s }).ToList() ?? new List<Signature>());
             patrolLog.CreatedBy = user.UserName;
             patrolLog.Created = DateTime.Now;
+
+
+            // add changes and save them to db
             await dbContext.AddAsync(patrolLog);
             dbContext.SaveChanges();
+
+
+            // Return Response
             return Ok(dto);
         }
 
 
+        // it creates a default PatrolNo in Settings table if it does not exist
         private async Task initializePatrolSettingIfNotExist()
         {
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");

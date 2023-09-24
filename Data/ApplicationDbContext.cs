@@ -7,6 +7,13 @@ namespace SharkValleyServer.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+
         public DbSet<PatrolTimeLog> PatrolTimeLogs { get; set; }
         public DbSet<WeatherLog> WeatherLogs { get; set; }
         public DbSet<ContactLog> ContactLogs { get; set; }
@@ -18,9 +25,9 @@ namespace SharkValleyServer.Data
         public DbSet<Setting> Settings { get; set; }
 
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        // Set new models here to make chanegs in database
+        public DbSet<UserTimer> UserTimers { get; set; }
+
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharkValleyServer.Data;
 
@@ -11,9 +12,11 @@ using SharkValleyServer.Data;
 namespace SharkValleyServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230923012529_adding user timer table for tracking user timers")]
+    partial class addingusertimertablefortrackingusertimers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -433,14 +436,11 @@ namespace SharkValleyServer.Migrations
                     b.Property<int?>("PatrolLogId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartedPatrolTime")
+                    b.Property<DateTime>("StartedPatrol")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("hasEndedPatrol")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("hasStartedPatrol")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("StartedPatrolTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

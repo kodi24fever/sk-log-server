@@ -1,0 +1,107 @@
+@page "/logsByIdPatrol"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@inject NavigationManager NavManager
+@using SharkValleyServer.Data;
+@using SharkValleyServer.Dtos;
+@using Microsoft.AspNetCore.WebUtilities
+@inject ApplicationDbContext _dbContext
+@inject UserManager<IdentityUser> _UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using Microsoft.EntityFrameworkCore
+
+
+
+<PageTitle>Show Logs By Patrol ID Test</PageTitle>
+<h1>General Info By Patrol ID</h1>
+
+
+
+<h2>Hellos</h2>
+
+<h3>Patrol ID</h3>
+
+
+
+<span>@AlonePatrolLog.PatrolNo</span>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    @foreach(var oenSign in signatures.Signatures)
+    {
+        <tr>
+        <th scope="row">@signatures.PatrolNo</th>
+        <td>@oenSign.FullName</td>
+        <td>Otto</td>
+        <td>asd</td>
+        </tr>
+    }
+
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>asd</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>asd</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+@code{
+    System.Collections.Generic.ICollection<SharkValleyServer.Data.Signature> LocalSignatures;
+
+
+    PatrolLog AlonePatrolLog = new PatrolLog();
+
+
+    private PatrolLog signatures = new PatrolLog();
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        signatures = await _dbContext.PatrolLogs
+                    .Include(pl => pl.Signatures)
+                    .Include(pl => pl.SupplyLogs)
+                    .Include(pl => pl.PatrolTime)
+                    .FirstOrDefaultAsync(pl => pl.Id == 14002);
+
+
+
+
+        Console.WriteLine(signatures.Signatures.Count);
+
+
+
+        Console.WriteLine(signatures.PatrolTime.ArrivalTime);
+
+
+        foreach(var oenSign in signatures.SupplyLogs)
+        {
+            Console.WriteLine(oenSign.Type);
+        }
+
+        
+
+
+    }
+}

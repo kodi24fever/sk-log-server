@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharkValleyServer.Data;
 
@@ -11,9 +12,11 @@ using SharkValleyServer.Data;
 namespace SharkValleyServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230920035714_addign model builder for signature adn supply relation")]
+    partial class addignmodelbuilderforsignatureadnsupplyrelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,6 +374,7 @@ namespace SharkValleyServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PatrolLogId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -397,6 +401,10 @@ namespace SharkValleyServer.Migrations
                     b.Property<int?>("PatrolLogId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SignatureId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
@@ -407,46 +415,9 @@ namespace SharkValleyServer.Migrations
 
                     b.HasIndex("PatrolLogId");
 
+                    b.HasIndex("SignatureId");
+
                     b.ToTable("SupplyLogs");
-                });
-
-            modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndedPatrolTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LogInTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LogOutTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("PatrolLogId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartedPatrolTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("hasEndedPatrol")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("hasStartedPatrol")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatrolLogId");
-
-                    b.ToTable("UserTimers");
                 });
 
             modelBuilder.Entity("SharkValleyServer.Data.WeatherLog", b =>
@@ -599,7 +570,9 @@ namespace SharkValleyServer.Migrations
                 {
                     b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
                         .WithMany("Signatures")
-                        .HasForeignKey("PatrolLogId");
+                        .HasForeignKey("PatrolLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PatrolLog");
                 });
@@ -610,16 +583,15 @@ namespace SharkValleyServer.Migrations
                         .WithMany("SupplyLogs")
                         .HasForeignKey("PatrolLogId");
 
-                    b.Navigation("PatrolLog");
-                });
-
-            modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
-                {
-                    b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
-                        .WithMany()
-                        .HasForeignKey("PatrolLogId");
+                    b.HasOne("SharkValleyServer.Data.Signature", "Signature")
+                        .WithMany("SupplyLogs")
+                        .HasForeignKey("SignatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PatrolLog");
+
+                    b.Navigation("Signature");
                 });
 
             modelBuilder.Entity("SharkValleyServer.Data.WeatherLog", b =>
@@ -655,6 +627,11 @@ namespace SharkValleyServer.Migrations
                     b.Navigation("WeatherLog");
 
                     b.Navigation("WildLifeLogs");
+                });
+
+            modelBuilder.Entity("SharkValleyServer.Data.Signature", b =>
+                {
+                    b.Navigation("SupplyLogs");
                 });
 #pragma warning restore 612, 618
         }
