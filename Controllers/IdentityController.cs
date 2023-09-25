@@ -61,6 +61,10 @@ namespace SharkValleyServer.Controllers
                 // get current patrolLog for the specified patrolNo
                 var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
 
+                // current role
+                var role = "Administrators";
+
+
                 if(patrolLog == null){
                     Console.WriteLine("No Object");
 
@@ -89,10 +93,19 @@ namespace SharkValleyServer.Controllers
                     dbContext.SaveChanges();
                 }
 
+
+
+                if(await _userManager.IsInRoleAsync(user, role)){
+                    return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin"});
+                }
+                else{
+                    return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User"});
+                }
+
                 
                 }
 
-                return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName });
+                
             }
 
             return BadRequest("Incorrect Credentials");
