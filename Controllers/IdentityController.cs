@@ -96,9 +96,13 @@ namespace SharkValleyServer.Controllers
 
 
                 if(await _userManager.IsInRoleAsync(user, role)){
+
+                    
                     return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin"});
                 }
                 else{
+
+
                     return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User"});
                 }
 
