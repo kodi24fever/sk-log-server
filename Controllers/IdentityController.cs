@@ -58,8 +58,6 @@ namespace SharkValleyServer.Controllers
                 // get current patrolLogID from Settings
                 var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
 
-
-                Console.WriteLine(patrolNo.Value);
                 
                 // get current patrolLog for the specified patrolNo
                 var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
@@ -68,53 +66,46 @@ namespace SharkValleyServer.Controllers
                 var role = "Administrators";
 
 
-                if(patrolLog == null){
-                    Console.WriteLine("No Object");
+                // if patrolLog object is initialized or created then submit log in timer 
+                if(patrolLog != null && patrolLog.WasCreated == true){
 
-                }else{
-
-                Console.WriteLine(patrolLog.Id);
-
-
-                // Get userTimer Table
-                var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+                    // Get userTimer Table
+                    var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
 
 
-                // If logTimer does not exist create a new one
-                if(logExist == null){
+                    // If logTimer does not exist create a new one
+                    if(logExist == null){
 
-                    // Initialize empty logIn timer
-                    UserTimer logIn = new UserTimer();
+                        // Initialize empty logIn timer
+                        UserTimer logIn = new UserTimer();
 
-                    logIn.PatrolLogId = patrolLog.Id;
-                    logIn.Email = user.Email;
-                    logIn.LogInTime = DateTime.Now;
+                        // add data to timer
+                        logIn.PatrolLogId = patrolLog.Id;
+                        logIn.Email = user.Email;
+                        logIn.LogInTime = DateTime.Now;
 
 
-                    // save changes to db
-                    await dbContext.AddAsync(logIn);
-                    dbContext.SaveChanges();
+                        // save changes to db
+                        await dbContext.AddAsync(logIn);
+                        dbContext.SaveChanges();
+                    }
+
+
+                    // return json response in json with respectives roles
+                    if(await _userManager.IsInRoleAsync(user, role)){
+                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin"});
+                    }
+                    else{
+                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User"});
+                    }
                 }
 
-
-
-                if(await _userManager.IsInRoleAsync(user, role)){
-
-                    
-                    return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin"});
-                }
-                else{
-
-
-                    return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User"});
-                }
-
-                
-                }
+                // we can add resposne here if log is not created yet in else statement
 
                 
             }
 
+            // repsonse if user does not exist
             return BadRequest("Incorrect Credentials");
           
         }
