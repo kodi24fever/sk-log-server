@@ -52,11 +52,14 @@ namespace SharkValleyServer.Controllers
             if(user != null)
             {
 
-                // we can insert timer here before return response of users logged in
+                // Set timer here before return response of users logged in
 
                 // Add Timer on sign in
                 // get current patrolLogID from Settings
                 var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
+
+
+                Console.WriteLine(patrolNo.Value);
                 
                 // get current patrolLog for the specified patrolNo
                 var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();

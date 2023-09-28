@@ -140,10 +140,10 @@ namespace SharkValleyServer.Controllers
 
             
             //await dbContext.AddAsync(patrolLog);
-            dbContext.SaveChanges();
+            //dbContext.SaveChanges();
             
 
-            // Increase PatrolLog
+            // Increase PatrolLog after creating one
             patrolNo++;
             patrolNoSetting.Value = patrolNo.ToString();
             await dbContext.SaveChangesAsync();

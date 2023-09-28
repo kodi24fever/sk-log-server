@@ -6,8 +6,11 @@ using SharkValleyServer.Dtos;
 using SharkValleyServer.Services;
 
 
+
+
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Text;
+using System.Net.WebSockets;
 
 
 
@@ -74,12 +77,23 @@ namespace SharkValleyServer.Controllers
 
   
             IdentityUser? user = await userManager.FindByEmailAsync(email);
-            
-            user = new IdentityUser{UserName = username, Email = email};
-            
-            var result = await userManager.CreateAsync(user, password);
 
-            return Ok(result);
+
+            // check if user is null to create a new one
+            if(user == null)
+            {
+                user = new IdentityUser{UserName = username, Email = email};
+                
+                var result = await userManager.CreateAsync(user, password);
+
+                return Ok(result);
+
+            }
+            
+            
+            
+            return new JsonResult(new { succeeded = false, error = "user exists"});
+            
 
         }
 
