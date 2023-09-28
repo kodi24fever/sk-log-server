@@ -25,5 +25,7 @@ namespace SharkValleyServer.Data
 
         public Boolean hasEndedPatrol { get; set; } = false;
 
+        public Boolean isCreator { get; set; } = false;
+
     }
 }
