@@ -185,10 +185,9 @@ namespace SharkValleyServer.Controllers
 
             if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
             {
-                return Ok("An instance was created but not completed");
+                return new JsonResult(new { succeded = false, error = "log already created but not completed"});
 
             }
-
 
 
             // Initialize patrolLog Object
