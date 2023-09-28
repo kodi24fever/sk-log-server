@@ -91,12 +91,12 @@ namespace SharkValleyServer.Controllers
 
 
 
+
+
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
 
             // get current patrolNo from db
             int patrolNo = int.Parse(patrolNoSetting.Value);
-            // Increase patrol log everytime a new one is created
-
 
             // Get patrolLog here with current PatrolNo
             var patrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
@@ -114,44 +114,72 @@ namespace SharkValleyServer.Controllers
                 return Ok("Patrol Log: " + patrolNoSetting.Value + " was already created");
             }
 
-            
-            //patrolLog.PatrolNo = patrolNo.ToString();
-            patrolLog.PatrolTime = dto.patrolTime;
-            patrolLog.WeatherLog = dto.weatherLog;
-            patrolLog.ContactLog = dto.contactLog;
-            patrolLog.Comments = dto.comments;
-            patrolLog.Signatures.AddRange(dto.signatures?.Select(s => new Signature { FullName = s }).ToList() ?? new List<Signature>());
-            patrolLog.IncidentReports.AddRange(dto.incidentReports);
-            patrolLog.WildLifeLogs.AddRange(dto.wildlifeSights?.Where(w=> w.Amount> 0).ToList()?? new List<WildLifeLog>());
-            patrolLog.SupplyLogs.AddRange(dto.supplies);
-            //patrolLog.CreatedBy = user.UserName;
-            patrolLog.Created = DateTime.Now;
-            patrolLog.WasCreated = true;
+
+            // get Creator for TimerTables and check if a creator exists
+            var checkCreator = await dbContext.UserTimers.Where(ut => ut.isCreator == true && patrolLog.Id == ut.PatrolLogId).FirstOrDefaultAsync();
+
+            //return Ok("testing creation for logs creator if true " + checkCreator.Email + " for logNo: " + patrolLog.PatrolNo);
+
+            // non creator users show unauthorized access
+            if(checkCreator == null)
+                return Unauthorized();
 
 
-            // add changes and save them to db
+            if(checkCreator.Email == user.Email)
+            {
+                // no need for the patrolNo since we have it in initialization
+                //patrolLog.PatrolNo = patrolNo.ToString();
+                patrolLog.PatrolTime = dto.patrolTime;
+                patrolLog.WeatherLog = dto.weatherLog;
+                patrolLog.ContactLog = dto.contactLog;
+                patrolLog.Comments = dto.comments;
+                patrolLog.Signatures.AddRange(dto.signatures?.Select(s => new Signature { FullName = s }).ToList() ?? new List<Signature>());
+                patrolLog.IncidentReports.AddRange(dto.incidentReports);
+                patrolLog.WildLifeLogs.AddRange(dto.wildlifeSights?.Where(w=> w.Amount> 0).ToList()?? new List<WildLifeLog>());
+                patrolLog.SupplyLogs.AddRange(dto.supplies);
+                // we already know the creator when initialized the patrol log
+                //patrolLog.CreatedBy = user.UserName;
+                patrolLog.Created = DateTime.Now;
+                patrolLog.WasCreated = true;
 
-            
-            //await dbContext.AddAsync(patrolLog);
-            //dbContext.SaveChanges();
-            
 
-            // Increase PatrolLog after creating one
-            patrolNo++;
-            patrolNoSetting.Value = patrolNo.ToString();
-            await dbContext.SaveChangesAsync();
+                // add changes and save them to db
+
+                
+                //await dbContext.AddAsync(patrolLog);
+                //dbContext.SaveChanges();
+                
+
+                // Increase PatrolLog after creating one and save it in db
+                patrolNo++;
+                patrolNoSetting.Value = patrolNo.ToString();
+                await dbContext.SaveChangesAsync();
 
 
-            // Return Response
-            return Ok(dto);
+                // Return Response
+                return Ok(dto);
+
+
+
+                // Good idea to log Out all users after this or trach the timer
+
+            }
+
+
+            // return if none of the cases apply
+            return Unauthorized();
         }
-        
-        
-        
+
+
+
+
+
+        // Initialization method for patrol logs
         // POST api/<ValuesController>
         [HttpPost("initPatrolLog")]
         public async Task<IActionResult> PostInitipatrolLog()
         {
+            // check API key
             if (!Auth.IsValidAPIKey(Request))
                 return Unauthorized();
 
@@ -228,11 +256,7 @@ namespace SharkValleyServer.Controllers
             }
 
 
-
-
-
             // Return Response
-
             return new JsonResult(new { CreatedBy = user.UserName, PatrloNo = patrolNoSetting.Value});
 
         }
