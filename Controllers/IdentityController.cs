@@ -120,16 +120,9 @@ namespace SharkValleyServer.Controllers
         [HttpPost("logOut")]
         public async Task<ActionResult> LogOff()
         {
-            
-
             await _signInManager.SignOutAsync();
-
-
             return Ok("successfully signed out");
-
         }
-
-
 
     }
 }

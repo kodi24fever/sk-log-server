@@ -62,13 +62,6 @@ namespace SharkValleyServer.Controllers
 
 
 
-
-
-
-
-
-
-
         // POST api/<ValuesController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PatrolLogDto dto)

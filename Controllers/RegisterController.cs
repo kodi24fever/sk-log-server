@@ -90,8 +90,6 @@ namespace SharkValleyServer.Controllers
 
             }
             
-            
-            
             return new JsonResult(new { succeeded = false, error = "user exists"});
             
 
