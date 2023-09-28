@@ -156,13 +156,24 @@ namespace SharkValleyServer.Controllers
                 await dbContext.SaveChangesAsync();
 
 
+                // Good idea to log Out all users after this line to track the end timer
+                // only tracking time here
+
+                var userEndTimers = dbContext.UserTimers.Where(ut => patrolLog.Id == ut.PatrolLogId);
+
+                foreach(var user_timer in userEndTimers){
+                    if(user_timer.EndedPatrolTime == DateTime.Parse("0001-01-01 00:00:00.0000000"))
+                        user_timer.EndedPatrolTime = DateTime.Now;
+                }
+
+                // save endTimers
+                await dbContext.SaveChangesAsync();
+
+
+
+
                 // Return Response
                 return Ok(dto);
-
-
-
-                // Good idea to log Out all users after this or trach the timer
-
             }
 
 
