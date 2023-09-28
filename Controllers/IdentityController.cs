@@ -67,7 +67,7 @@ namespace SharkValleyServer.Controllers
 
 
                 // if patrolLog object is initialized and not created then submit log in timer 
-                if(patrolLog != null && patrolLog.WasCreated == true){
+                if(patrolLog != null && patrolLog.WasCreated == false){
 
                     // Get userTimer Table
                     var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
@@ -91,19 +91,24 @@ namespace SharkValleyServer.Controllers
                     }
 
 
-                    // return json response in json with respectives roles
+                    // return json response in json with respectives roles when patrol log is created
                     if(await _userManager.IsInRoleAsync(user, role)){
-                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin"});
+                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin", IsPatrolLogCreated = true});
                     }
                     else{
-                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User"});
+                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User", IsPatrolLogCreated = true});
                     }
                 }
                 else 
                 {
 
-                    // returns response if patrol log is not initiated or already created
-                    return new JsonResult(new { succeeded = false, error = "patrol log not created"});
+                    // return json response in json with respectives roles return json response in json with respectives roles when patrol log IS NOT created
+                    if(await _userManager.IsInRoleAsync(user, role)){
+                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin", IsPatrolLogCreated = false});
+                    }
+                    else{
+                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User", IsPatrolLogCreated = false});
+                    }
                 }
 
                 
