@@ -194,14 +194,42 @@ namespace SharkValleyServer.Controllers
             // Initialize patrolLog Object
             PatrolLog patrolLog = new PatrolLog();
 
-            
+            // add data to new patrolLog
             patrolLog.PatrolNo = patrolNo.ToString();
             patrolLog.CreatedBy = user.UserName;
             patrolLog.HasCreator = true;
 
+            // add user to userTimer and set isCreator to true
+
+
             // add changes and save them to db
             await dbContext.AddAsync(patrolLog);
             dbContext.SaveChanges();
+
+
+            // Get userTimer Table
+            var logExist = dbContext.UserTimers.Where(ut => ut.Email == user.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+
+
+            // If logTimer does not exist create a new one
+            if(logExist == null){
+
+                // Initialize empty logIn timer
+                UserTimer logIn = new UserTimer();
+
+                // add data to timer
+                logIn.PatrolLogId = patrolLog.Id;
+                logIn.Email = user.Email;
+                logIn.LogInTime = DateTime.Now;
+                logIn.isCreator = true;
+
+                // save creator to db
+                await dbContext.AddAsync(logIn);
+                dbContext.SaveChanges();
+            }
+
+
+
 
 
             // Return Response

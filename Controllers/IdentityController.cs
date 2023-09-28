@@ -48,7 +48,7 @@ namespace SharkValleyServer.Controllers
             }
 
 
-
+            // check if user exists
             if(user != null)
             {
 
@@ -73,13 +73,13 @@ namespace SharkValleyServer.Controllers
                     var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
 
 
-                    // If logTimer does not exist create a new one
+                    // If logTimer does not exist create a new one. Probvably don't need the if statement because logTimer does not exist
                     if(logExist == null){
 
                         // Initialize empty logIn timer
                         UserTimer logIn = new UserTimer();
 
-                        // add data to timer
+                        // add data to timer of creator for the log
                         logIn.PatrolLogId = patrolLog.Id;
                         logIn.Email = user.Email;
                         logIn.LogInTime = DateTime.Now;
