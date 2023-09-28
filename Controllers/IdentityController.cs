@@ -66,7 +66,7 @@ namespace SharkValleyServer.Controllers
                 var role = "Administrators";
 
 
-                // if patrolLog object is initialized or created then submit log in timer 
+                // if patrolLog object is initialized and not created then submit log in timer 
                 if(patrolLog != null && patrolLog.WasCreated == true){
 
                     // Get userTimer Table
@@ -99,8 +99,12 @@ namespace SharkValleyServer.Controllers
                         return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User"});
                     }
                 }
+                else 
+                {
 
-                // we can add resposne here if log is not created yet in else statement
+                    // returns response if patrol log is not initiated or already created
+                    return new JsonResult(new { succeeded = false, error = "patrol log not created"});
+                }
 
                 
             }
