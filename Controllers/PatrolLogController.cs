@@ -170,8 +170,6 @@ namespace SharkValleyServer.Controllers
                 await dbContext.SaveChangesAsync();
 
 
-
-
                 // Return Response
                 return Ok(dto);
             }

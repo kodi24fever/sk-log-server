@@ -35,16 +35,19 @@
             
             @foreach (var item in getLogs())
             {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.PatrolNo</td>
-                    <td>@item.Comments</td>
-                    <td>@item.Created</td>
-                    <td>@item.CreatedBy</td>
-                    <td>@item.LastUpdate</td>
-                    <td>@item.UpdatedBy</td>
-                    <td><a href="/EditPatrolLog?Id=@item.Id">Edit</a></td>
-                </tr>
+                @if(item.WasCreated){
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.PatrolNo</td>
+                        <td>@item.Comments</td>
+                        <td>@item.Created</td>
+                        <td>@item.CreatedBy</td>
+                        <td>@item.LastUpdate</td>
+                        <td>@item.UpdatedBy</td>
+                        <td><a href="/EditPatrolLog?Id=@item.Id">Edit</a></td>
+                    </tr>
+                }
+
             }
             </tbody>
             </table>
