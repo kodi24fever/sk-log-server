@@ -26,6 +26,8 @@ namespace SharkValleyServer.Controllers
         }
 
 
+
+        // Return the last 10 logs created by a specific user
         [HttpGet("last10")]
         public async Task<IActionResult> Get()
         {
@@ -41,13 +43,6 @@ namespace SharkValleyServer.Controllers
             if (user == null)
             {
                 return Unauthorized(Request);
-            }
-                
-            
-            // Check that use is admin before creating a patrol log
-            if(!(await userManager.IsInRoleAsync(user, "Administrators")))
-            {
-                return Unauthorized();
             }
 
             var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo =p.PatrolNo, Created = p.Created}).Take(10).ToList();
