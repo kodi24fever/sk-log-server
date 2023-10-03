@@ -54,7 +54,7 @@ namespace SharkValleyServer.Controllers
         }
 
 
-        // Return the last 10 logs created by a specific user
+        // Get request to send info about initialized patrol
         [HttpGet("getInitLog")]
         public async Task<IActionResult> GetInitiLog()
         {
@@ -76,24 +76,34 @@ namespace SharkValleyServer.Controllers
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
             int patrolNo = int.Parse(patrolNoSetting.Value);
 
-
-            // No need to increase it on initialization
-            //patrolNo++;
-            // patrolNoSetting.Value = patrolNo.ToString();
-            // await dbContext.SaveChangesAsync();
+            // get patrolLog for current patrolNo value
+            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
 
             
-            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
 
 
             if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
             {
-                return new JsonResult(new { isCreated = true, error = "log already created but not completed"});
+                //check if user is creator of patrol
+
+                var currentUser = dbContext.UserTimers.Where(ut => ut.PatrolLogId == currentPatrolLog.Id && ut.Email == user.Email).FirstOrDefault();
+
+
+                if(currentUser == null){
+                    return new JsonResult(new { isCreated = true, isCreator = false, error = "user does has not logged in to current patrol log"});
+                }
+
+
+                Console.WriteLine(currentUser.Email);
+                
+
+
+                return new JsonResult(new { isCreated = true, isCreator = currentUser.isCreator, error = "log already created but not completed"});
 
             }
 
-
-            return new JsonResult(new { isCreated = false });
+            // patrol log not found so it does not have creator either
+            return new JsonResult(new { isCreated = false, isCreator = false, error = ""});
         }
 
 
