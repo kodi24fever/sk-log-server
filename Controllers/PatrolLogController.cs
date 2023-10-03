@@ -54,6 +54,49 @@ namespace SharkValleyServer.Controllers
         }
 
 
+        // Return the last 10 logs created by a specific user
+        [HttpGet("getInitLog")]
+        public async Task<IActionResult> GetInitiLog()
+        {
+            if (!Auth.IsValidAPIKey(Request))
+                return Unauthorized();
+
+            string? userId = Auth.getUserId(Request);
+            if (userId == null)
+                return Unauthorized(Request);
+
+
+            IdentityUser? user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized(Request);
+            }
+
+            // PatrolNo cannot be increased everytime a request is made it has to be set by admin or increasded daily
+            var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
+            int patrolNo = int.Parse(patrolNoSetting.Value);
+
+
+            // No need to increase it on initialization
+            //patrolNo++;
+            // patrolNoSetting.Value = patrolNo.ToString();
+            // await dbContext.SaveChangesAsync();
+
+            
+            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
+
+
+            if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
+            {
+                return new JsonResult(new { isCreated = true, error = "log already created but not completed"});
+
+            }
+
+
+            return new JsonResult(new { isCreated = false });
+        }
+
+
 
 
 
@@ -173,8 +216,6 @@ namespace SharkValleyServer.Controllers
             // return if none of the cases apply
             return Unauthorized();
         }
-
-
 
 
 
