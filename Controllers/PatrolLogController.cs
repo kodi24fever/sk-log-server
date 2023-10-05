@@ -272,7 +272,7 @@ namespace SharkValleyServer.Controllers
 
                 // use this part to change patrolNo to the next available number to be used
 
-                return Ok("Porably PatrolNo is already used. Contact Admin to chaneg patrolNo");
+                return Ok("Probably PatrolNo is already used. Contact Admin to chaneg patrolNo");
             }
 
 
