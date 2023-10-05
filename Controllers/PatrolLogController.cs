@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
@@ -77,7 +78,7 @@ namespace SharkValleyServer.Controllers
             int patrolNo = int.Parse(patrolNoSetting.Value);
 
             // get patrolLog for current patrolNo value
-            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
+            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
 
             
 
@@ -90,7 +91,7 @@ namespace SharkValleyServer.Controllers
 
 
                 if(currentUser == null){
-                    return new JsonResult(new { isCreated = true, isCreator = false, error = "user does has not logged in to current patrol log"});
+                    return new JsonResult(new { isCreated = true, isCreator = false, error = "user has not logged in to current patrol log"});
                 }
 
 
@@ -103,7 +104,7 @@ namespace SharkValleyServer.Controllers
             }
 
             // patrol log not found so it does not have creator either
-            return new JsonResult(new { isCreated = false, isCreator = false, error = ""});
+            return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creaetd"});
         }
 
 
@@ -147,7 +148,7 @@ namespace SharkValleyServer.Controllers
             int patrolNo = int.Parse(patrolNoSetting.Value);
 
             // Get patrolLog here with current PatrolNo
-            var patrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
+            var patrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
 
 
             // check if patrol log is null or does not exist
@@ -212,6 +213,7 @@ namespace SharkValleyServer.Controllers
                 foreach(var user_timer in userEndTimers){
                     if(user_timer.EndedPatrolTime == DateTime.Parse("0001-01-01 00:00:00.0000000"))
                         user_timer.EndedPatrolTime = DateTime.Now;
+                        user_timer.hasEndedPatrol = true;
                 }
 
                 // save endTimers
@@ -263,7 +265,19 @@ namespace SharkValleyServer.Controllers
             // await dbContext.SaveChangesAsync();
 
             
-            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value).FirstOrDefaultAsync();
+            var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
+
+
+            if(currentPatrolLog == null){
+
+                // use this part to change patrolNo to the next available number to be used
+
+                return Ok("Porably PatrolNo is already used. Contact Admin to chaneg patrolNo");
+            }
+
+
+
+            Console.WriteLine(currentPatrolLog.Id);
 
 
             if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
