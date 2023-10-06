@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SharkValleyServer.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,11 +59,27 @@ namespace SharkValleyServer.Migrations
                     PatrolNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasCreator = table.Column<bool>(type: "bit", nullable: false),
+                    WasCreated = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PatrolLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    Key = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Key);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,6 +254,25 @@ namespace SharkValleyServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Signatures",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PatrolLogId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Signatures", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Signatures_PatrolLogs_PatrolLogId",
+                        column: x => x.PatrolLogId,
+                        principalTable: "PatrolLogs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SupplyLogs",
                 columns: table => new
                 {
@@ -254,6 +289,32 @@ namespace SharkValleyServer.Migrations
                     table.PrimaryKey("PK_SupplyLogs", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SupplyLogs_PatrolLogs_PatrolLogId",
+                        column: x => x.PatrolLogId,
+                        principalTable: "PatrolLogs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTimers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatrolLogId = table.Column<int>(type: "int", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LogInTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartedPatrolTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndedPatrolTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LogOutTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    hasStartedPatrol = table.Column<bool>(type: "bit", nullable: false),
+                    hasEndedPatrol = table.Column<bool>(type: "bit", nullable: false),
+                    isCreator = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTimers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTimers_PatrolLogs_PatrolLogId",
                         column: x => x.PatrolLogId,
                         principalTable: "PatrolLogs",
                         principalColumn: "Id");
@@ -364,8 +425,18 @@ namespace SharkValleyServer.Migrations
                 filter: "[PatrolLogId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Signatures_PatrolLogId",
+                table: "Signatures",
+                column: "PatrolLogId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SupplyLogs_PatrolLogId",
                 table: "SupplyLogs",
+                column: "PatrolLogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTimers_PatrolLogId",
+                table: "UserTimers",
                 column: "PatrolLogId");
 
             migrationBuilder.CreateIndex(
@@ -409,7 +480,16 @@ namespace SharkValleyServer.Migrations
                 name: "PatrolTimeLogs");
 
             migrationBuilder.DropTable(
+                name: "Settings");
+
+            migrationBuilder.DropTable(
+                name: "Signatures");
+
+            migrationBuilder.DropTable(
                 name: "SupplyLogs");
+
+            migrationBuilder.DropTable(
+                name: "UserTimers");
 
             migrationBuilder.DropTable(
                 name: "WeatherLogs");

@@ -12,8 +12,8 @@ using SharkValleyServer.Data;
 namespace SharkValleyServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230919210715_changed one to many relation in patrol log to be an Icollection")]
-    partial class changedonetomanyrelationinpatrollogtobeanIcollection
+    [Migration("20231006025658_initial-migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,6 +300,9 @@ namespace SharkValleyServer.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("HasCreator")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
 
@@ -308,6 +311,9 @@ namespace SharkValleyServer.Migrations
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("WasCreated")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -411,6 +417,48 @@ namespace SharkValleyServer.Migrations
                     b.HasIndex("PatrolLogId");
 
                     b.ToTable("SupplyLogs");
+                });
+
+            modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndedPatrolTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LogInTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LogOutTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PatrolLogId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartedPatrolTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("hasEndedPatrol")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("hasStartedPatrol")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isCreator")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatrolLogId");
+
+                    b.ToTable("UserTimers");
                 });
 
             modelBuilder.Entity("SharkValleyServer.Data.WeatherLog", b =>
@@ -572,6 +620,15 @@ namespace SharkValleyServer.Migrations
                 {
                     b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
                         .WithMany("SupplyLogs")
+                        .HasForeignKey("PatrolLogId");
+
+                    b.Navigation("PatrolLog");
+                });
+
+            modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
+                {
+                    b.HasOne("SharkValleyServer.Data.PatrolLog", "PatrolLog")
+                        .WithMany()
                         .HasForeignKey("PatrolLogId");
 
                     b.Navigation("PatrolLog");
