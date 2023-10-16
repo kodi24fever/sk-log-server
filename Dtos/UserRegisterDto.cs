@@ -4,6 +4,8 @@ namespace SharkValleyServer.Dtos
 {
     public class UserRegisterDto
     {
+
+        public string? UserName { get; set;} = "";
         [EmailAddress]
         [Required]
         public string? Email { get; set; } = "";
