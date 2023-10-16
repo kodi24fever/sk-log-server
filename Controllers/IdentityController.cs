@@ -58,6 +58,11 @@ namespace SharkValleyServer.Controllers
                 // get current patrolLogID from Settings
                 var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
 
+                // initialize patrolNo if it does not exist
+                if(patrolNo == null){
+                    await initializePatrolSettingIfNotExist();
+                }
+
                 
                 // get current patrolLog for the specified patrolNo
                 var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefault();
@@ -127,6 +132,20 @@ namespace SharkValleyServer.Controllers
         {
             await _signInManager.SignOutAsync();
             return Ok("successfully signed out");
+        }
+
+
+
+        // it creates a default PatrolNo in Settings table if it does not exist
+        private async Task initializePatrolSettingIfNotExist()
+        {
+            var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
+            if (patrolNoSetting == null)
+            {
+                patrolNoSetting = new Setting { Key = "PatrolNo", Value = "4000" };
+                dbContext.Add(patrolNoSetting);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
     }
