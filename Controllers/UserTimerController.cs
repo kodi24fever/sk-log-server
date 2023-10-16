@@ -76,30 +76,28 @@ namespace SharkValleyServer.Controllers
             // get current patrolLog for the specified patrolNo
             var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == currentPatrolLogId.Value.ToString()).FirstOrDefault();
 
+            // check if patrolLog exists and it is initialized
+            if(patrolLog == null){
 
-            // check if patrolLogId and email exist in the table rturn bad repsonse else add start timer
-            var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
-
-
-            Console.WriteLine(logExist.Email);
-
-
-            if(logExist == null)
-            {
-                Console.WriteLine("it does not exist log");
-
-
-            }else{
-                Console.WriteLine("it exists log");
+                return new JsonResult(new { hasStartedPatrol = false, error = "Patrol not initialized"});
             }
 
 
+            // check if patrolLogId and email exist in the table return bad repsonse else add start timer
+            var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
 
+            // check if logs exists in userTimers
+            if(logExist == null)
+            {
+                return new JsonResult(new { hasStartedPatrol = false, error = "Patrol not initialized or does not exist"});
+
+            }
+
+            // log already exists
             if(logExist.hasStartedPatrol == true)
             {
                 //handle return if user hasStartedPatrol
-
-                return Ok("Soryy already startedPatrol");
+                return new JsonResult(new { hasStartedPatrol = true, error = "Soryy already startedPatrol"});
             }
             else
             {
@@ -112,8 +110,10 @@ namespace SharkValleyServer.Controllers
                 // save startedPatrolTime to db
                 dbContext.SaveChanges();
 
+
+                return new JsonResult(new { hasStartedPatrol = true, error = "Timer Saved"});
+
             }
-            return Ok("Timer Started");
         }
 
 
