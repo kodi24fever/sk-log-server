@@ -77,19 +77,25 @@ namespace SharkValleyServer.Controllers
 
             // PatrolNo cannot be increased everytime a request is made it has to be set by admin or increasded daily
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
+
+
             int patrolNo = int.Parse(patrolNoSetting.Value);
 
             // get patrolLog for current patrolNo value
             var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
 
-            
 
+            if(currentPatrolLog == null){
 
-            if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
+                // / patrol log not found so it does not have creator either
+                return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creaetd"});
+
+            }
+            else if(currentPatrolLog != null & !currentPatrolLog.WasCreated)
             {
                 //check if user is creator of patrol
 
-                var currentUser = dbContext.UserTimers.Where(ut => ut.PatrolLogId == currentPatrolLog.Id && ut.Email == user.Email).FirstOrDefault();
+                var currentUser = dbContext.UserTimers.Where(ut => ut.PatrolLogId == currentPatrolLog.Id & ut.Email == user.Email).FirstOrDefault();
 
 
                 if(currentUser == null){
