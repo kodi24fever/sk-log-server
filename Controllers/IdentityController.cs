@@ -35,7 +35,7 @@ namespace SharkValleyServer.Controllers
 
             IdentityUser? user = null;
             
-            if(!string.IsNullOrEmpty(dto.Email) && !string.IsNullOrEmpty(dto.Password)) {
+            if(!string.IsNullOrEmpty(dto.Email) & !string.IsNullOrEmpty(dto.Password)) {
                var userFound = await _userManager.FindByEmailAsync(dto.Email);
                 if (userFound != null)
                 {
@@ -57,7 +57,7 @@ namespace SharkValleyServer.Controllers
 
                 // Add Timer on sign in
                 // get current patrolLogID from Settings
-                var patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
+                var patrolNo = dbContext.Settings.Find("PatrolNo");
 
 
                 // current role
@@ -69,53 +69,11 @@ namespace SharkValleyServer.Controllers
                     await initializePatrolSettingIfNotExist();
 
                     // Get the initialized patrolNo
-                    patrolNo = await dbContext.Settings.FindAsync("PatrolNo");
+                    patrolNo = dbContext.Settings.Find("PatrolNo");
 
                 }
 
-
-                var patrolLogsExist = dbContext.PatrolLogs.Any();
-
-
-                // First User that logs in creates the log in case the db does not have previous logs
-                if(!patrolLogsExist){
-
-                    // Initialize patrolLog Object
-                    PatrolLog newPatrolLog = new PatrolLog();
-
-                    newPatrolLog.PatrolNo = patrolNo.Value.ToString();
-                    newPatrolLog.CreatedBy = user.UserName;
-                    newPatrolLog.HasCreator = true;
-
-                    await dbContext.AddAsync(newPatrolLog);
-                    dbContext.SaveChanges();
-
-
-                    // Initialize empty logIn timer
-                    UserTimer logIn = new UserTimer();
-
-                    // add data to timer of creator for the log
-                    logIn.PatrolLogId = newPatrolLog.Id;
-                    logIn.Email = user.Email;
-                    logIn.LogInTime = DateTime.Now;
-                    logIn.isCreator = true;
-
-
-                    // save changes to db
-                    await dbContext.AddAsync(logIn);
-                    dbContext.SaveChanges();
-
-
-                    // return json response in json with respectives roles when patrol log is created
-                    if(await _userManager.IsInRoleAsync(user, role)){
-                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "Admin", IsPatrolLogCreated = true});
-                    }
-                    else{
-                        return new JsonResult(new UserLoginResponseDto { Id = user.Id, Email = user.Email, UserName = user.UserName, Role = "User", IsPatrolLogCreated = true});
-                    }
-
-                }
-
+                
 
                 // get current patrolLog for the specified patrolNo
                 var patrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefaultAsync();
@@ -123,7 +81,7 @@ namespace SharkValleyServer.Controllers
 
 
                 // if patrolLog object is initialized and not created then submit log in timer 
-                if(patrolLog != null && patrolLog.WasCreated == false){
+                if(patrolLog != null && !patrolLog.WasCreated){
 
                     // Get userTimer Table
                     var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();

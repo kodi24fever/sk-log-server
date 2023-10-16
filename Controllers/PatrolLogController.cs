@@ -88,13 +88,12 @@ namespace SharkValleyServer.Controllers
             if(currentPatrolLog == null){
 
                 // / patrol log not found so it does not have creator either
-                return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creaetd"});
+                return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not created"});
 
             }
-            else if(currentPatrolLog != null & !currentPatrolLog.WasCreated)
+            else if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
             {
                 //check if user is creator of patrol
-
                 var currentUser = dbContext.UserTimers.Where(ut => ut.PatrolLogId == currentPatrolLog.Id & ut.Email == user.Email).FirstOrDefault();
 
 
@@ -102,17 +101,14 @@ namespace SharkValleyServer.Controllers
                     return new JsonResult(new { isCreated = true, isCreator = false, error = "user has not logged in to current patrol log"});
                 }
 
-
-                Console.WriteLine(currentUser.Email);
                 
-
 
                 return new JsonResult(new { isCreated = true, isCreator = currentUser.isCreator, error = "log already created but not completed"});
 
             }
 
             // patrol log not found so it does not have creator either
-            return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creaetd"});
+            return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creatd"});
         }
 
 
@@ -173,7 +169,7 @@ namespace SharkValleyServer.Controllers
 
 
             // get Creator for TimerTables and check if a creator exists
-            var checkCreator = await dbContext.UserTimers.Where(ut => ut.isCreator == true && patrolLog.Id == ut.PatrolLogId).FirstOrDefaultAsync();
+            var checkCreator = await dbContext.UserTimers.Where(ut => ut.isCreator == true & patrolLog.Id == ut.PatrolLogId).FirstOrDefaultAsync();
 
             //return Ok("testing creation for logs creator if true " + checkCreator.Email + " for logNo: " + patrolLog.PatrolNo);
 
@@ -267,10 +263,46 @@ namespace SharkValleyServer.Controllers
             int patrolNo = int.Parse(patrolNoSetting.Value);
 
 
-            // No need to increase it on initialization
-            //patrolNo++;
-            // patrolNoSetting.Value = patrolNo.ToString();
-            // await dbContext.SaveChangesAsync();
+
+            // Check if db is empty and create first patrolLog
+            // check if all the patrol logs exist
+            var patrolLogsExist = dbContext.PatrolLogs.Any();
+
+
+            // First User that logs in creates the log in case the db does not have previous logs
+            if(!patrolLogsExist){
+
+                // Initialize patrolLog Object
+                PatrolLog newPatrolLog = new PatrolLog();
+
+                newPatrolLog.PatrolNo = patrolNo.ToString();
+                newPatrolLog.CreatedBy = user.UserName;
+                newPatrolLog.HasCreator = true;
+
+                await dbContext.AddAsync(newPatrolLog);
+                dbContext.SaveChanges();
+
+
+                // Initialize empty logIn timer
+                UserTimer logIn = new UserTimer();
+
+                // add data to timer of creator for the log
+                logIn.PatrolLogId = newPatrolLog.Id;
+                logIn.Email = user.Email;
+                logIn.LogInTime = DateTime.Now;
+                logIn.isCreator = true;
+
+
+                // save changes to db
+                await dbContext.AddAsync(logIn);
+                dbContext.SaveChanges();
+
+
+                // Return Response
+                return new JsonResult(new { CreatedBy = user.UserName, PatrloNo = patrolNoSetting.Value});
+
+            }
+
 
             
             var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
@@ -279,6 +311,46 @@ namespace SharkValleyServer.Controllers
             if(currentPatrolLog == null){
 
                 //return Ok("Probably PatrolNo is already used. Contact Admin to chaneg patrolNo");
+                // Initialize patrolLog Object
+                PatrolLog patrolLog = new PatrolLog();
+
+                // add data to new patrolLog
+                patrolLog.PatrolNo = patrolNo.ToString();
+                patrolLog.CreatedBy = user.UserName;
+                patrolLog.HasCreator = true;
+
+                // add user to userTimer and set isCreator to true
+
+
+                // add changes and save them to db
+                await dbContext.AddAsync(patrolLog);
+                dbContext.SaveChanges();
+
+
+                // Get userTimer Table
+                var logExist = dbContext.UserTimers.Where(ut => ut.Email == user.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+
+
+                // If logTimer does not exist create a new one
+                if(logExist == null){
+
+                    // Initialize empty logIn timer
+                    UserTimer logIn = new UserTimer();
+
+                    // add data to timer
+                    logIn.PatrolLogId = patrolLog.Id;
+                    logIn.Email = user.Email;
+                    logIn.LogInTime = DateTime.Now;
+                    logIn.isCreator = true;
+
+                    // save creator to db
+                    await dbContext.AddAsync(logIn);
+                    dbContext.SaveChanges();
+                }
+
+
+                // Return Response
+                return new JsonResult(new { CreatedBy = user.UserName, PatrloNo = patrolNoSetting.Value});
             }
 
 
@@ -292,46 +364,11 @@ namespace SharkValleyServer.Controllers
             }
 
 
-            // Initialize patrolLog Object
-            PatrolLog patrolLog = new PatrolLog();
-
-            // add data to new patrolLog
-            patrolLog.PatrolNo = patrolNo.ToString();
-            patrolLog.CreatedBy = user.UserName;
-            patrolLog.HasCreator = true;
-
-            // add user to userTimer and set isCreator to true
-
-
-            // add changes and save them to db
-            await dbContext.AddAsync(patrolLog);
-            dbContext.SaveChanges();
-
-
-            // Get userTimer Table
-            var logExist = dbContext.UserTimers.Where(ut => ut.Email == user.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
-
-
-            // If logTimer does not exist create a new one
-            if(logExist == null){
-
-                // Initialize empty logIn timer
-                UserTimer logIn = new UserTimer();
-
-                // add data to timer
-                logIn.PatrolLogId = patrolLog.Id;
-                logIn.Email = user.Email;
-                logIn.LogInTime = DateTime.Now;
-                logIn.isCreator = true;
-
-                // save creator to db
-                await dbContext.AddAsync(logIn);
-                dbContext.SaveChanges();
-            }
-
 
             // Return Response
-            return new JsonResult(new { CreatedBy = user.UserName, PatrloNo = patrolNoSetting.Value});
+            return new JsonResult(new { CreatedBy = "no user", PatrloNo = "No #"});
+
+
 
         }
 
