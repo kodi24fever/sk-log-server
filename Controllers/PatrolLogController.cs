@@ -267,17 +267,14 @@ namespace SharkValleyServer.Controllers
             
             var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
 
-
+            // handle error if currentPatrolLOg is null. COuld move lines 288 - 321 inside here to create a new patrolLog
             if(currentPatrolLog == null){
 
-                // use this part to change patrolNo to the next available number to be used
-
-                return Ok("Probably PatrolNo is already used. Contact Admin to chaneg patrolNo");
+                //return Ok("Probably PatrolNo is already used. Contact Admin to chaneg patrolNo");
             }
 
 
-
-            Console.WriteLine(currentPatrolLog.Id);
+            //Console.WriteLine(currentPatrolLog.Id);
 
 
             if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
