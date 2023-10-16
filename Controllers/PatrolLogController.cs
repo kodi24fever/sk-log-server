@@ -46,7 +46,9 @@ namespace SharkValleyServer.Controllers
                 return Unauthorized(Request);
             }
 
-            var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo =p.PatrolNo, Created = p.Created}).Take(10).ToList();
+            var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName & p.WasCreated).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo = p.PatrolNo, Created = p.Created}).Take(10).ToList();
+
+
             int userPatrolLogsCount = dbContext.PatrolLogs.Count(p => p.CreatedBy == user.UserName);
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
             int patroLogsCount = int.Parse(patrolNoSetting?.Value??"0");
@@ -75,19 +77,25 @@ namespace SharkValleyServer.Controllers
 
             // PatrolNo cannot be increased everytime a request is made it has to be set by admin or increasded daily
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
+
+
             int patrolNo = int.Parse(patrolNoSetting.Value);
 
             // get patrolLog for current patrolNo value
             var currentPatrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNoSetting.Value & pl.WasCreated == false).FirstOrDefaultAsync();
 
-            
 
+            if(currentPatrolLog == null){
 
-            if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
+                // / patrol log not found so it does not have creator either
+                return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creaetd"});
+
+            }
+            else if(currentPatrolLog != null & !currentPatrolLog.WasCreated)
             {
                 //check if user is creator of patrol
 
-                var currentUser = dbContext.UserTimers.Where(ut => ut.PatrolLogId == currentPatrolLog.Id && ut.Email == user.Email).FirstOrDefault();
+                var currentUser = dbContext.UserTimers.Where(ut => ut.PatrolLogId == currentPatrolLog.Id & ut.Email == user.Email).FirstOrDefault();
 
 
                 if(currentUser == null){
