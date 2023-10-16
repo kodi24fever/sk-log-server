@@ -74,15 +74,11 @@ namespace SharkValleyServer.Controllers
                 }
 
 
-
-                
-                // get current patrolLog for the specified patrolNo
-                var patrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefaultAsync();
-
+                var patrolLogsExist = dbContext.PatrolLogs.Any();
 
 
                 // First User that logs in creates the log in case the db does not have previous logs
-                if(patrolLog == null){
+                if(!patrolLogsExist){
 
                     // Initialize patrolLog Object
                     PatrolLog newPatrolLog = new PatrolLog();
@@ -119,6 +115,10 @@ namespace SharkValleyServer.Controllers
                     }
 
                 }
+
+
+                // get current patrolLog for the specified patrolNo
+                var patrolLog = await dbContext.PatrolLogs.Where(pl => pl.PatrolNo == patrolNo.Value.ToString()).FirstOrDefaultAsync();
 
 
 
