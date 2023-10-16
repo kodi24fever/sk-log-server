@@ -46,7 +46,9 @@ namespace SharkValleyServer.Controllers
                 return Unauthorized(Request);
             }
 
-            var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo =p.PatrolNo, Created = p.Created}).Take(10).ToList();
+            var userPatrolLogs = dbContext.PatrolLogs.Where(p => p.CreatedBy == user.UserName & p.WasCreated).OrderByDescending(p=>p.Created).Select(p => new {PatrolNo = p.PatrolNo, Created = p.Created}).Take(10).ToList();
+
+
             int userPatrolLogsCount = dbContext.PatrolLogs.Count(p => p.CreatedBy == user.UserName);
             var patrolNoSetting = await dbContext.Settings.FindAsync("PatrolNo");
             int patroLogsCount = int.Parse(patrolNoSetting?.Value??"0");
