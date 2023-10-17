@@ -84,7 +84,7 @@ namespace SharkValleyServer.Controllers
 
 
             // check if patrolLogId and email exist in the table return bad repsonse else add start timer
-            var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+            var logExist = dbContext.UserTimers.Where(ut => ut.Email == user.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
 
             // check if logs exists in userTimers
             if(logExist == null)
@@ -97,7 +97,7 @@ namespace SharkValleyServer.Controllers
             if(logExist.hasStartedPatrol == true)
             {
                 //handle return if user hasStartedPatrol
-                return new JsonResult(new { hasStartedPatrol = true, error = "Soryy already startedPatrol"});
+                return new JsonResult(new { hasStartedPatrol = false, error = "Sorry already startedPatrol"});
             }
             else
             {
@@ -118,7 +118,7 @@ namespace SharkValleyServer.Controllers
 
 
         // end patrol timer post method api
-        [HttpPost("endTimer")]
+        [HttpPost("endTime")]
         public async Task<ActionResult> PostEndPatrolTimer([FromBody] UserTimerDto dto)
         {
 
@@ -142,22 +142,34 @@ namespace SharkValleyServer.Controllers
             // get current patrolLogID from Settings
             var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
 
+
+            Console.WriteLine(currentPatrolLogId.Value);
+            Console.WriteLine(user.Email);
+
+
+
             // get current patrolLog for the specified patrolNo
             var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == currentPatrolLogId.Value.ToString()).FirstOrDefault();
 
+            if(patrolLog == null){
+
+                return new JsonResult(new { hasEndedPatrol = false, error = "Patrol not initialized"});
+            }
+
 
             // check if patrolLogId and email exist in the table rturn bad repsonse else add start timer
-            var logExist = dbContext.UserTimers.Where(ut => ut.Email == dto.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
+            var logExist = dbContext.UserTimers.Where(ut => ut.Email == user.Email & ut.PatrolLogId == patrolLog.Id).FirstOrDefault();
 
 
             if(logExist == null)
             {
-                Console.WriteLine("it does not exist log");
+                //handle return if user hasStartedPatrol
+                return new JsonResult(new { hasEndedPatrol = false, error = "Patrol not initialized or does not exist"});
 
-
-            }else{
-                Console.WriteLine("it exists log");
             }
+
+
+            Console.WriteLine(logExist.EndedPatrolTime);
 
 
 
@@ -165,7 +177,7 @@ namespace SharkValleyServer.Controllers
             {
                 //handle return if user hasStartedPatrol
 
-                return Ok("Sorry You Already Ended Patrol");
+                return new JsonResult(new { hasEndedPatrol = false, error = "Sorry already EndedPatrol"});
             }
             else
             {
@@ -178,12 +190,12 @@ namespace SharkValleyServer.Controllers
                 // save startedPatrolTime to db
                 dbContext.SaveChanges();
 
+
+
+                return new JsonResult(new { hasEndedPatrol = true, error = "Timer Saved"});
+
             }
-            return Ok("Patrol Timer Ended");
         }
-
-
-
 
     }
 }
