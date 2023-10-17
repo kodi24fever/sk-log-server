@@ -297,6 +297,9 @@ namespace SharkValleyServer.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("HasCreator")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
 
@@ -305,6 +308,9 @@ namespace SharkValleyServer.Migrations
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("WasCreated")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -440,6 +446,9 @@ namespace SharkValleyServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("hasStartedPatrol")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isCreator")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

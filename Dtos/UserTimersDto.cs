@@ -6,10 +6,6 @@ namespace SharkValleyServer.Dtos
     public class UserTimerDto
     {
         
-        [Required]
-        public string? Email { get; set; } = "";
-
-
         public DateTime LogInTime {get; set;}
 
         public DateTime StartedPatrolTime {get; set;}

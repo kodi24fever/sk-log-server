@@ -13,7 +13,7 @@ namespace SharkValleyServer.Data
         public  WeatherLog? WeatherLog { get; set; }
         public  ContactLog? ContactLog { get; set; }
         public String? Comments { get; set; }
-
+        
         public IList<IncidentReport> IncidentReports { get; } = new List<IncidentReport>(); // Collection navigation
 
         public IList<WildLifeLog> WildLifeLogs { get; } = new List<WildLifeLog>(); // Collection navigation
@@ -29,5 +29,11 @@ namespace SharkValleyServer.Data
         public DateTime LastUpdate { get; set; }
 
         public string? UpdatedBy { get; set; }
+
+        public Boolean HasCreator { get; set; } = false;
+
+        public Boolean WasCreated { get; set; } = false; 
+
+       
     }
 }

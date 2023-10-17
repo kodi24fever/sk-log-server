@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kRMKXUP9G3aJp65CubTpIXrFnhwhr2HHfd92Mxi/bidzDvX9mkSBg4l1idLcrfq2LbiLI4igUwYP8Eup1onhOw==",
+  "dgSpecHash": "KE8ABHNofliSfzHH3uhQHGlBB0W0pP1cPkNpIQFgrWupTS9ZVDYACH5Z4/IjWKrFYZvnQwvNc8ahVWHXv7zCyQ==",
   "success": true,
-  "projectFilePath": "c:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\SharkValleyServer.csproj",
+  "projectFilePath": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\SharkValleyServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fdaviz\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\fdaviz\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
