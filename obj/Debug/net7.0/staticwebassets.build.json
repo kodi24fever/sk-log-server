@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "FpJCZGvHEeXfAWOx3Wygwz+glleFKAVHquYfVFyD2X4=",
+  "Hash": "99g38G2Bgj8h83kmLsJpRAEfG+isN9WkoAe8wUqQjCo=",
   "Source": "SharkValleyServer",
   "BasePath": "_content/SharkValleyServer",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "SharkValleyServer\\wwwroot",
       "Source": "SharkValleyServer",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "Pattern": "**"
     }
@@ -1037,10 +1037,10 @@
       "OriginalItemSpec": "C:\\Users\\fdaviz\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\7.0.7\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SharkValleyServer.styles.css",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SharkValleyServer.styles.css",
       "SourceId": "SharkValleyServer",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\Debug\\net7.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\Debug\\net7.0\\scopedcss\\bundle\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "SharkValleyServer.styles.css",
       "AssetKind": "All",
@@ -1051,13 +1051,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SharkValleyServer.styles.css"
+      "OriginalItemSpec": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\Debug\\net7.0\\scopedcss\\bundle\\SharkValleyServer.styles.css"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SharkValleyServer.bundle.scp.css",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SharkValleyServer.bundle.scp.css",
       "SourceId": "SharkValleyServer",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "SharkValleyServer.bundle.scp.css",
       "AssetKind": "All",
@@ -1068,13 +1068,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SharkValleyServer.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SharkValleyServer.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -1088,10 +1088,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -1105,10 +1105,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
@@ -1122,10 +1122,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
@@ -1139,10 +1139,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
@@ -1156,10 +1156,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
@@ -1173,10 +1173,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
@@ -1190,10 +1190,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
@@ -1207,10 +1207,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
@@ -1224,10 +1224,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
@@ -1241,10 +1241,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
@@ -1258,10 +1258,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\css\\site.css",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -1275,10 +1275,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\favicon.png",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
@@ -1292,10 +1292,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
-      "Identity": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\js\\modal.js",
+      "Identity": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\js\\modal.js",
       "SourceId": "SharkValleyServer",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\wwwroot\\",
       "BasePath": "_content/SharkValleyServer",
       "RelativePath": "js/modal.js",
       "AssetKind": "All",

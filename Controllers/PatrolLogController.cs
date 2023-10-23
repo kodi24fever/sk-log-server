@@ -216,7 +216,7 @@ namespace SharkValleyServer.Controllers
 
                 foreach(var user_timer in userEndTimers){
                     if(user_timer.EndedPatrolTime == DateTime.Parse("0001-01-01 00:00:00.0000000"))
-                        user_timer.EndedPatrolTime = DateTime.Now;
+                        user_timer.EndedPatrolTime = dto.endTime;
                         user_timer.hasEndedPatrol = true;
                 }
 
@@ -238,7 +238,7 @@ namespace SharkValleyServer.Controllers
         // Initialization method for patrol logs
         // POST api/<ValuesController>
         [HttpPost("initPatrolLog")]
-        public async Task<IActionResult> PostInitipatrolLog()
+        public async Task<IActionResult> PostInitipatrolLog([FromBody] UserTimer userTimerDto)
         {
             // check API key
             if (!Auth.IsValidAPIKey(Request))
@@ -289,7 +289,7 @@ namespace SharkValleyServer.Controllers
                 // add data to timer of creator for the log
                 logIn.PatrolLogId = newPatrolLog.Id;
                 logIn.Email = user.Email;
-                logIn.LogInTime = DateTime.Now;
+                logIn.LogInTime = userTimerDto.LogInTime;
                 logIn.isCreator = true;
 
 
@@ -340,7 +340,7 @@ namespace SharkValleyServer.Controllers
                     // add data to timer
                     logIn.PatrolLogId = patrolLog.Id;
                     logIn.Email = user.Email;
-                    logIn.LogInTime = DateTime.Now;
+                    logIn.LogInTime = userTimerDto.LogInTime;
                     logIn.isCreator = true;
 
                     // save creator to db

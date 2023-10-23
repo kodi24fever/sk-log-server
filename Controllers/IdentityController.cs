@@ -96,7 +96,7 @@ namespace SharkValleyServer.Controllers
                         // add data to timer of creator for the log
                         logIn.PatrolLogId = patrolLog.Id;
                         logIn.Email = user.Email;
-                        logIn.LogInTime = DateTime.Now;
+                        logIn.LogInTime = dto.LogInTime;
 
 
                         // save changes to db
