@@ -28,7 +28,17 @@ namespace SharkValleyServer.Controllers
             if (!Auth.IsValidAPIKey(Request))
                 return Unauthorized();
 
+
+            if(dto.Email == null){
+
+                return BadRequest("Wrong Email");
+            }
+
             var userFound = await _userManager.FindByEmailAsync(dto.Email);
+
+
+
+
             if(userFound != null)
             {
                 return BadRequest("Account with the given email already exists!");
@@ -42,6 +52,8 @@ namespace SharkValleyServer.Controllers
                 EmailConfirmed = true,
             };
             await _userManager.CreateAsync(NewUser, dto.Password);
+
+
             return Ok();
 
             
