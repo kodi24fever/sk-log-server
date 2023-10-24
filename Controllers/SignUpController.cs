@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SharkValleyServer.Data;
@@ -25,6 +26,8 @@ namespace SharkValleyServer.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(UserRegisterDto dto)
         {
+
+
             if (!Auth.IsValidAPIKey(Request))
                 return Unauthorized();
 
@@ -34,9 +37,14 @@ namespace SharkValleyServer.Controllers
                 return BadRequest("Wrong Email");
             }
 
+
+            // getting body data
+            string? username = dto.UserName;
+            string? email = dto.Email;
+            string? password = dto.Password;
+
+
             var userFound = await _userManager.FindByEmailAsync(dto.Email);
-
-
 
 
             if(userFound != null)
@@ -44,18 +52,25 @@ namespace SharkValleyServer.Controllers
                 return BadRequest("Account with the given email already exists!");
             }
 
-            // Creates a new user based on the details sent to this method
-            var NewUser = new IdentityUser
-            {
-                UserName = dto.Email,
-                Email = dto.Email,
-                EmailConfirmed = true,
-            };
-            await _userManager.CreateAsync(NewUser, dto.Password);
+
+            if(userFound == null){
+
+                // Creates a new user based on the details sent to this method
+                var NewUser = new IdentityUser
+                {
+                    UserName = dto.Email,
+                    Email = dto.Email,
+                    EmailConfirmed = true,
+                };
+
+
+
+                var result = await _userManager.CreateAsync(NewUser, dto.Password);
+                return Ok(result);
+            }
 
 
             return Ok();
-
             
         }
     }
