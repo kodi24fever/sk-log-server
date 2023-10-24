@@ -166,9 +166,6 @@ namespace SharkValleyServer.Controllers
             }
 
 
-            Console.WriteLine(logExist.EndedPatrolTime);
-
-
 
             if(logExist.hasEndedPatrol == true)
             {
