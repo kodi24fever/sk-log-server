@@ -71,6 +71,11 @@ namespace SharkValleyServer.Controllers
                     // Get the initialized patrolNo
                     patrolNo = dbContext.Settings.Find("PatrolNo");
 
+                }else{
+
+                    if(patrolNo.Value == null){
+                        return new JsonResult(new { error = "No Patrol No contact manager"});
+                    }
                 }
 
                 

@@ -73,6 +73,16 @@ namespace SharkValleyServer.Controllers
             // get current patrolLogID from Settings
             var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
 
+            // Check patrolLog value for nullable
+            if(currentPatrolLogId == null){
+                return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Does not Exist Contact Manager"});
+            }else{
+
+                if(currentPatrolLogId.Value == null){
+                    return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Log Has not been assigned. Contact Manager"});
+                }
+            }
+
             // get current patrolLog for the specified patrolNo
             var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == currentPatrolLogId.Value.ToString()).FirstOrDefault();
 
@@ -142,10 +152,15 @@ namespace SharkValleyServer.Controllers
             // get current patrolLogID from Settings
             var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
 
+            // Check patrolLog value for nullable
+            if(currentPatrolLogId == null){
+                return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Does not Exist Contact Manager"});
+            }else{
 
-            Console.WriteLine(currentPatrolLogId.Value);
-            Console.WriteLine(user.Email);
-
+                if(currentPatrolLogId.Value == null){
+                    return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Log Has not been assigned. Contact Manager"});
+                }
+            }
 
 
             // get current patrolLog for the specified patrolNo
