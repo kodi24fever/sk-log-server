@@ -29,24 +29,6 @@ namespace SharkValleyServer.Controllers
             this.userManager = userManager;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Get()
-        {
-
-            // Get the api key from headers when user send post request
-            if (!Auth.IsValidAPIKey(Request))
-                return Unauthorized();
-
-            string? userId = Auth.getUserId(Request);
-            if (userId == null)
-                return Unauthorized();
-
-
-            
-            return Ok("Hello To timers");
-
-        }
-
 
         // start patrol timer post method api
         [HttpPost("startTime")]
