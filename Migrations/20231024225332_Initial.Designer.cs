@@ -12,8 +12,8 @@ using SharkValleyServer.Data;
 namespace SharkValleyServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231006025658_initial-migration")]
-    partial class initialmigration
+    [Migration("20231024225332_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -417,6 +417,28 @@ namespace SharkValleyServer.Migrations
                     b.HasIndex("PatrolLogId");
 
                     b.ToTable("SupplyLogs");
+                });
+
+            modelBuilder.Entity("SharkValleyServer.Data.UserName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Firstname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserName");
                 });
 
             modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>

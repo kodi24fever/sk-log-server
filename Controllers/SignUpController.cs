@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SharkValleyServer.Data;
 using SharkValleyServer.Dtos;
 using SharkValleyServer.Services;
@@ -12,11 +13,14 @@ namespace SharkValleyServer.Controllers
     [ApiController]
     public class SignUpController : ControllerBase
     {
+
+        private readonly ApplicationDbContext dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public SignUpController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManage)
+        public SignUpController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManage)
         {
+            this.dbContext = dbContext;
             this._userManager = userManager;
             this._signInManager = signInManage;
         }
@@ -63,9 +67,26 @@ namespace SharkValleyServer.Controllers
                     EmailConfirmed = true,
                 };
 
-
-
                 var result = await _userManager.CreateAsync(NewUser, dto.Password);
+
+                // if user was succesfully created in the aspnetuser table
+                if(result.Succeeded){
+
+                    var userName = dbContext.UserName.Where(un => un.Email == dto.Email).FirstOrDefault();
+
+                    UserName userFullName = new UserName();
+
+                    userFullName.Email = dto.Email;
+                    userFullName.FirstName = dto.FirstName;
+                    userFullName.LastName = dto.LastName;
+
+                    // add new user firstname and lastname to UserName Table
+                    await dbContext.AddAsync(userFullName);
+                    dbContext.SaveChanges();
+
+                }
+
+
                 return Ok(result);
             }
 

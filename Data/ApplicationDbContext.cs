@@ -29,5 +29,8 @@ namespace SharkValleyServer.Data
         public DbSet<UserTimer> UserTimers { get; set; }
 
 
+        public DbSet<UserName> UserName { get; set; }
+
+
     }
 }

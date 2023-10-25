@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SharkValleyServer.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,6 +80,21 @@ namespace SharkValleyServer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Settings", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserName",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserName", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -487,6 +502,9 @@ namespace SharkValleyServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "SupplyLogs");
+
+            migrationBuilder.DropTable(
+                name: "UserName");
 
             migrationBuilder.DropTable(
                 name: "UserTimers");
