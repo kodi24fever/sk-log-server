@@ -1,4 +1,5 @@
-﻿using SharkValleyServer.Data;
+﻿using System.Security.Cryptography.X509Certificates;
+using SharkValleyServer.Data;
 
 namespace SharkValleyServer.Dtos
 {
@@ -18,5 +19,10 @@ namespace SharkValleyServer.Dtos
       public  List<SupplyLog>? supplies { get; set; }
 
       public List<String>? signatures { get; set; }
+
+      // this timer can be used as logout and end patrol timers
+      public DateTime endTime { get; set;}
+
+
     }
 }

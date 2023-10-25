@@ -11786,11 +11786,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\SharkValleyServer.csproj",
+      "projectUniqueName": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\SharkValleyServer.csproj",
       "projectName": "SharkValleyServer",
-      "projectPath": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\SharkValleyServer.csproj",
+      "projectPath": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\SharkValleyServer.csproj",
       "packagesPath": "C:\\Users\\fdaviz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fdaviz\\Desktop\\SharkValleyPatrolLog\\Code\\Server\\SharkValleyServer\\SharkValleyServer\\obj\\",
+      "outputPath": "C:\\Users\\fdaviz\\Desktop\\sk-log-server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\fdaviz\\AppData\\Roaming\\NuGet\\NuGet.Config"

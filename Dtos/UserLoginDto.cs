@@ -11,5 +11,8 @@ namespace SharkValleyServer.Dtos
         [Required]
         public string? Password { get; set; } = "";
 
+        [Required]
+        public DateTime LogInTime {get; set;}
+
     }
 }

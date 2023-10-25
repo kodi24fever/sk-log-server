@@ -29,24 +29,6 @@ namespace SharkValleyServer.Controllers
             this.userManager = userManager;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Get()
-        {
-
-            // Get the api key from headers when user send post request
-            if (!Auth.IsValidAPIKey(Request))
-                return Unauthorized();
-
-            string? userId = Auth.getUserId(Request);
-            if (userId == null)
-                return Unauthorized();
-
-
-            
-            return Ok("Hello To timers");
-
-        }
-
 
         // start patrol timer post method api
         [HttpPost("startTime")]
@@ -72,6 +54,16 @@ namespace SharkValleyServer.Controllers
 
             // get current patrolLogID from Settings
             var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
+
+            // Check patrolLog value for nullable
+            if(currentPatrolLogId == null){
+                return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Does not Exist Contact Manager"});
+            }else{
+
+                if(currentPatrolLogId.Value == null){
+                    return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Log Has not been assigned. Contact Manager"});
+                }
+            }
 
             // get current patrolLog for the specified patrolNo
             var patrolLog = dbContext.PatrolLogs.Where(pl => pl.PatrolNo == currentPatrolLogId.Value.ToString()).FirstOrDefault();
@@ -142,10 +134,15 @@ namespace SharkValleyServer.Controllers
             // get current patrolLogID from Settings
             var currentPatrolLogId = await dbContext.Settings.FindAsync("PatrolNo");
 
+            // Check patrolLog value for nullable
+            if(currentPatrolLogId == null){
+                return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Does not Exist Contact Manager"});
+            }else{
 
-            Console.WriteLine(currentPatrolLogId.Value);
-            Console.WriteLine(user.Email);
-
+                if(currentPatrolLogId.Value == null){
+                    return new JsonResult(new { hasEndedPatrol = false, error = "Patrol Log Has not been assigned. Contact Manager"});
+                }
+            }
 
 
             // get current patrolLog for the specified patrolNo
@@ -167,9 +164,6 @@ namespace SharkValleyServer.Controllers
                 return new JsonResult(new { hasEndedPatrol = false, error = "Patrol not initialized or does not exist"});
 
             }
-
-
-            Console.WriteLine(logExist.EndedPatrolTime);
 
 
 

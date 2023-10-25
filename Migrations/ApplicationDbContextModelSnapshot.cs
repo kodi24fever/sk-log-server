@@ -416,6 +416,28 @@ namespace SharkValleyServer.Migrations
                     b.ToTable("SupplyLogs");
                 });
 
+            modelBuilder.Entity("SharkValleyServer.Data.UserName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserName");
+                });
+
             modelBuilder.Entity("SharkValleyServer.Data.UserTimer", b =>
                 {
                     b.Property<int>("Id")
