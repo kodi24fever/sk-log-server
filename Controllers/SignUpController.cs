@@ -43,7 +43,7 @@ namespace SharkValleyServer.Controllers
 
 
             // getting body data
-            string? username = dto.UserName;
+            string? username = dto.Email; // this part can be changed to recieve UserName from front end
             string? email = dto.Email;
             string? password = dto.Password;
 
