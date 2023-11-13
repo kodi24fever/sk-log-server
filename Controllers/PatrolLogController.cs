@@ -88,7 +88,7 @@ namespace SharkValleyServer.Controllers
             if(currentPatrolLog == null){
 
                 // / patrol log not found so it does not have creator either
-                return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not created"});
+                return new JsonResult(new { isCreated = false, isCreator = false, hasStartedPatrol = false, hasEndedPatrol = false, error = "Patrol not created"});
 
             }
             else if(currentPatrolLog != null && !currentPatrolLog.WasCreated)
@@ -98,17 +98,17 @@ namespace SharkValleyServer.Controllers
 
 
                 if(currentUser == null){
-                    return new JsonResult(new { isCreated = true, isCreator = false, error = "user has not logged in to current patrol log"});
+                    return new JsonResult(new { isCreated = true, isCreator = false, hasStartedPatrol = false, hasEndedPatrol = false,  error = "user has not logged in to current patrol log"});
                 }
 
                 
 
-                return new JsonResult(new { isCreated = true, isCreator = currentUser.isCreator, error = "log already created but not completed"});
+                return new JsonResult(new { isCreated = true, isCreator = currentUser.isCreator, hasStartedPatrol = currentUser.hasStartedPatrol, hasEndedPatrol = currentUser.hasEndedPatrol, error = "log already created but not completed"});
 
             }
 
             // patrol log not found so it does not have creator either
-            return new JsonResult(new { isCreated = false, isCreator = false, error = "Patrol not creatd"});
+            return new JsonResult(new { isCreated = false, isCreator = false,hasStartedPatrol = false, hasEndedPatrol = false, error = "Patrol not creatd"});
         }
 
 
