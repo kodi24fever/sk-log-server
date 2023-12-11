@@ -2,8 +2,7 @@
 
   
 
-Shark Valley Intro blah blah
-
+Shark Valley Intro
   
   
 
